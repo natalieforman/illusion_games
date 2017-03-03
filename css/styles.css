@@ -1,1 +1,48 @@
-//styles go here
+/*Homepage Styles*/
+
+.illusion-category{
+	background-color: #eee;
+	border: 2px solid #fff;
+	border-radius: 5px;
+	margin-top: 5px;
+}
+
+.illusion-category .progress{
+	margin-top: 10px;
+}
+
+.illusion-category .btn.btn-default.results{
+	margin: 10px;
+}
+
+@media (min-width:768px){ .illusion-category{height: 230px;} }
+@media (min-width:992px){ .illusion-category{height: 250px;} }
+@media (min-width:1200px){ .illusion-category{height: 300px;} }
+
+
+/*Footer Styles*/
+/*http://stackoverflow.com/questions/19756997/how-to-create-a-sticky-footer-that-plays-well-with-bootstrap-3/23833625#23833625*/
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.main-content{
+	padding-bottom: 20px;
+}
+
+@media (max-width:768px){ .footer{position:absolute;width:100%;} }
+@media (min-width:768px){ .footer{position:absolute;bottom:0;height:60px;width:100%;}}
