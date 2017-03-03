@@ -1,3 +1,30 @@
+/*DEFAULTS*/
+/*
+Dark Blue: #0067A6;
+Light Blue: #00ABD8;
+Green:#008972;
+Yellow:#EFC028;
+Orange:#F2572D;
+*/
+
+/*Nav*/
+.navbar.navbar-default{
+	background-color:#008972; 
+	border: none;
+	border-radius: 0px;
+	color: #fff
+}
+.navbar.navbar-default a, .navbar-default .navbar-nav > li > a{
+	color: #fff;
+}
+.navbar-default .nav > li > a:focus, .navbar-default .nav > li > a:hover{
+	background-color: #006352;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover{
+	color: #fff;
+}
+
 /*Homepage Styles*/
 
 .illusion-category{
@@ -7,17 +34,21 @@
 	margin-top: 5px;
 }
 
-.illusion-category .progress{
-	margin-top: 10px;
+.main-content .row:not(:first-child){
+	margin-top: 20px;
+}
+
+.progress{
+	margin-bottom: 10px;
 }
 
 .illusion-category .btn.btn-default.results{
 	margin: 10px;
 }
 
-@media (min-width:768px){ .illusion-category{height: 230px;} }
-@media (min-width:992px){ .illusion-category{height: 250px;} }
-@media (min-width:1200px){ .illusion-category{height: 300px;} }
+@media (min-width:768px){ .illusion-category{height: 250px;} }
+@media (min-width:992px){ .illusion-category{height: 270px;} }
+@media (min-width:1200px){ .illusion-category{height: 320px;} }
 
 
 /*Footer Styles*/
