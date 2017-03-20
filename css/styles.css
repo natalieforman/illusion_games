@@ -32,19 +32,18 @@ h3, h4{
 }
 
 /*Side Nav*/
-.sidenav {
+.sidenav .nav {
   background-color: #f1f1f1;
-  height: 100%;
 }
-
+.sidenav .active, .sidenav .nav > li.active > a:hover{
+	background-color: #ccc;
+}
+.sidenav .nav > li > a:hover{
+	background-color: #aaa;
+	color: #fff;
+}
 .row.content.illusion-page {
 	height: 500px
-}
-
-.question-section{
-	margin: 10px 0;
-	padding: 20px;
-	background-color: #eee;
 }
 .question-text{
 	font-family: 'Merriweather', serif;
@@ -52,6 +51,12 @@ h3, h4{
 .question-section #done{
 	margin-top: 20px;
 	padding: 10px;
+}
+.sidenav .nav-ready a{
+	color: #008972;
+}
+.sidenav .nav-finished a{
+	color: #aaa;
 }
 
 .collection-illusion div{
@@ -100,7 +105,8 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 10px;
+  padding: 20px;
+  text-align: center;
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #f5f5f5;
@@ -112,3 +118,26 @@ body {
 
 @media (max-width:768px){ .footer{position:absolute;width:100%;} }
 @media (min-width:768px){ .footer{position:absolute;bottom:0;height:60px;width:100%;}}
+
+#illusion-holder{
+	position: relative;
+}
+
+.illusion-footer .col-sm-4{
+	background-color: #0067A6;
+	color: #fff;
+	padding-top: 25px;
+	height: 70px;
+	text-align: center;
+}
+.illusion-footer .col-sm-4 a{
+	color: #fff;
+}
+.illusion-footer .current-illusion{
+	font-size: 18px;
+}
+.illusion-footer .col-sm-4.illusion-nav:hover, .illusion-footer .col-sm-4 a:hover{
+	background-color: #000;
+	color: #fff;
+	text-decoration: none;
+}
