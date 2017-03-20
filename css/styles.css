@@ -7,6 +7,12 @@ Yellow:#EFC028;
 Orange:#F2572D;
 */
 
+@import url('https://fonts.googleapis.com/css?family=Merriweather:300,400,700');
+
+h3, h4{
+	font-family: 'Merriweather', serif;
+}
+
 /*Nav*/
 .navbar.navbar-default{
 	background-color:#008972; 
@@ -25,6 +31,35 @@ Orange:#F2572D;
 	color: #fff;
 }
 
+/*Side Nav*/
+.sidenav {
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+.row.content.illusion-page {
+	height: 500px
+}
+
+.question-section{
+	margin: 10px 0;
+	padding: 20px;
+	background-color: #eee;
+}
+.question-text{
+	font-family: 'Merriweather', serif;
+}
+.question-section #done{
+	margin-top: 20px;
+	padding: 10px;
+}
+
+.collection-illusion div{
+	background-color: #eee;
+	border-radius: 3px;
+	padding: 10px;
+
+}
 /*Homepage Styles*/
 
 .illusion-category{
