@@ -141,3 +141,101 @@ body {
 	color: #fff;
 	text-decoration: none;
 }
+
+/*FIREBASE*/
+.material-icons {
+  font-size: 36px;
+  top: 8px;
+  position: relative;
+    top: -1px;
+  margin-right: 5px;
+  vertical-align: middle;
+  color: #fff;
+}
+#user-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  right: 0;
+  padding-left: 10px;
+  justify-content: flex-end;
+  padding-right: 10px;
+  padding-top: 10px;
+}
+#user-container #user-pic {
+  top: -3px;
+  position: relative;
+  display: inline-block;
+  background-image: url('/images/profile_placeholder.png');
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 35px;
+  background-size: 35px;
+  border-radius: 20px;
+}
+#user-container #user-name {
+  font-size: 16px;
+  line-height: 36px;
+  padding-right: 10px;
+  padding-left: 20px;
+}
+#image-form #submitImage {
+  width: auto;
+  padding: 0 6px 0 1px;
+  min-width: 0;
+}
+#image-form #submitImage .material-icons {
+  top: -1px;
+}
+.message img {
+  max-width: 300px;
+  max-height: 200px;
+}
+#mediaCapture {
+  display: none;
+}
+@media screen and (max-width: 610px) {
+  header {
+    height: 113px;
+    padding-bottom: 80px !important;
+  }
+  #user-container {
+    top: 72px;
+    background-color: rgb(3,155,229);
+    height: 38px;
+    padding-top: 3px;
+    padding-right: 2px;
+  }
+  #user-container #user-pic {
+    top: 2px;
+    width: 33px;
+    height: 33px;
+    background-size: 33px;
+  }
+}
+.mdl-button {
+  background:0 0;
+  border:none;
+  border-radius:2px;
+  color:#fff;
+  position:relative;
+  height:36px;
+  margin:0;
+  min-width:64px;
+  padding:0 16px;
+  display:inline-block;
+  font-family:"Roboto","Helvetica","Arial",sans-serif;
+  font-size:14px;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:0;
+  overflow:hidden;
+  will-change:box-shadow;
+  transition:box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+  outline:none;
+  cursor:pointer;
+  text-decoration:none;
+  text-align:center;
+  line-height:36px;
+  vertical-align:middle
+}

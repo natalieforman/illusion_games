@@ -1,0 +1,56 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\Natalie\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.4.0
+[debug] Platform:     win32
+[debug] Node Version: v6.9.2
+[debug] Time:         Fri Mar 24 2017 10:50:11 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Natalie\Documents\GitHub\IllusionGames
+[info] Public Directory: ./
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\Natalie\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.4.0
+[debug] Platform:     win32
+[debug] Node Version: v6.9.2
+[debug] Time:         Sat Mar 25 2017 12:04:39 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Natalie\Documents\GitHub\IllusionGames
+[info] Public Directory: ./
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\Natalie\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.4.0
+[debug] Platform:     win32
+[debug] Node Version: v6.9.2
+[debug] Time:         Sat Mar 25 2017 13:27:44 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Natalie\Documents\GitHub\IllusionGames
+[info] Public Directory: ./
+[info] 
+[info] Server listening at: http://localhost:5000
+[debug] ----------------------------------------------------------------------
+[debug] Command:      C:\Program Files\nodejs\node.exe C:\Users\Natalie\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] CLI Version:  3.4.0
+[debug] Platform:     win32
+[debug] Node Version: v6.9.2
+[debug] Time:         Sat Mar 25 2017 13:51:31 GMT-0400 (Eastern Daylight Time)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: C:\Users\Natalie\Documents\GitHub\IllusionGames
+[info] Public Directory: ./
+[info] 
+[info] Server listening at: http://localhost:5000
