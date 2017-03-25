@@ -239,3 +239,11 @@ body {
   line-height:36px;
   vertical-align:middle
 }
+
+input[type=range]::-moz-range-track {
+  height: 10px;
+  border-radius: 5px;
+  height: 5px;
+  border: 1px solid #bdc3c7;
+  background-color: #fff;
+}
