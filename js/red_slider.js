@@ -9,13 +9,14 @@ var SliderYDist = 30;
 var BottomYheight;
 var TopYheight;
 
+var answer;
 var NDots = 2000;
   
  var X =[]
  var Y = []
 
 function setup() {
-  var canvas = createCanvas(550,600);
+  var canvas = createCanvas(540,570);
   canvas.parent("illusion-holder");
   colorMode(RGB,255,255,255,100);
   frameRate(2);
@@ -32,8 +33,10 @@ function setup() {
   var position = getPosition(spot)
   
   aSliderOver = createSlider(0, 100, 51);
-  aSliderOver.position(position.x+SliderX, position.y+SliderY);
+  //aSliderOver.position(10, 10);
+  //aSliderOver.position(position.x+SliderX, position.y+SliderY);
   aSliderOver.size(SlideSize);
+  
   
 }
 
@@ -58,9 +61,12 @@ function draw() {
   fill(255)
   text("r = "+c[0]+" g = "+c[1]+" b = "+c[2],20,20)
   
-  fill(220,220,220)
+  fill(255,255,255)
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
+  window.parent.myAnswers.choices[0] = aSliderOver.value();
+  //console.log(window.parent.myAnswers.choices[0]);
+
   doText();
 }
 
@@ -70,7 +76,7 @@ function doText() {
   textSize(FontSize);
   //text("Use Slider",SliderX+10,SliderY-20)
 
-  text(aSliderOver.value(),SliderX+SlideSize+5,SliderY+FontSize)
+  text("Value: "+ aSliderOver.value(), SliderX, SliderY);
 
 }
 
@@ -110,5 +116,5 @@ function getPosition(el) {
 function windowResized() {
   var spot = document.getElementById("illusion-holder");
   var position = getPosition(spot)
-  aSliderOver.position(position.x+SliderX+2*SliderDist, position.y+SliderY+3*SliderYDist);
+  //aSliderOver.position(position.x+SliderX+2*SliderDist, position.y+SliderY+3*SliderYDist);
 }

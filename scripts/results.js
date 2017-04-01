@@ -22,10 +22,10 @@ function IllusionGame() {
   var myAnswers = {  choices: [0, 0, 0, 0, 0]};
 
   //submit content
-  this.messageForm = document.getElementById('message-form');
+  //this.messageForm = document.getElementById('message-form');
   this.messageList = document.getElementById('messages');
-  this.messageInput = document.getElementById('message');
-  this.submitButton = document.getElementById('submit');
+  //this.messageInput = document.getElementById('message');
+  //this.submitButton = document.getElementById('submit');
 
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
@@ -33,7 +33,7 @@ function IllusionGame() {
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
 
-  this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
+  //this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.initFirebase();
@@ -64,27 +64,6 @@ IllusionGame.prototype.loadMessages = function() {
   }.bind(this);
   this.messagesRef.limitToLast(12).on('child_added', setMessage);
   this.messagesRef.limitToLast(12).on('child_changed', setMessage);
-};
-
-// Saves a new message on the Firebase DB.
-IllusionGame.prototype.saveMessage = function(e) {
-  e.preventDefault();
-  // Check that the user entered a message and is signed in.
-  if (this.messageInput.value && this.checkSignedInWithMessage()) {
-    var currentUser = this.auth.currentUser;
-    // Add a new message entry to the Firebase Database.
-    this.messagesRef.push({
-      name: currentUser.displayName,
-      result: myAnswers.choices[0]
-    }).then(function() {
-      // Clear message text field and SEND button state.
-      IllusionGame.resetMaterialTextfield(this.messageInput);
-      this.toggleButton();
-      this.submitButton.classList.add('hidden');
-    }.bind(this)).catch(function(error) {
-      //console.error('Error writing new message to Firebase Database', error);
-    });
-  }
 };
 
 // Signs-in Friendly Chat.
@@ -191,7 +170,7 @@ IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageU
   // Show the card fading-in.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
-  this.messageInput.focus();
+  //this.messageInput.focus();
 };
 
 // Enables or disables the submit button depending on the values of the input

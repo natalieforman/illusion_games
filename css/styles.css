@@ -109,7 +109,8 @@ body {
   text-align: center;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #f5f5f5;
+  background-color: #008972;
+  color: #fff;
 }
 
 .main-content{
@@ -124,24 +125,22 @@ body {
 }
 
 .illusion-footer .col-sm-4{
-	background-color: #0067A6;
-	color: #fff;
+	background-color: #ccc;
+	color: #000;
 	padding-top: 25px;
 	height: 70px;
 	text-align: center;
 }
 .illusion-footer .col-sm-4 a{
-	color: #fff;
+	color: #000;
 }
 .illusion-footer .current-illusion{
 	font-size: 18px;
 }
 .illusion-footer .col-sm-4.illusion-nav:hover, .illusion-footer .col-sm-4 a:hover{
-	background-color: #000;
-	color: #fff;
+	background-color: #aaa;
 	text-decoration: none;
 }
-
 /*FIREBASE*/
 .material-icons {
   font-size: 36px;
@@ -193,6 +192,9 @@ body {
 }
 #mediaCapture {
   display: none;
+}
+iframe, object, embed {
+    max-width: 100%;
 }
 @media screen and (max-width: 610px) {
   header {
