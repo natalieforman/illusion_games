@@ -249,3 +249,4 @@ input[type=range]::-moz-range-track {
   border: 1px solid #bdc3c7;
   background-color: #fff;
 }
+#viz rect {  fill: #7eb6e4;}

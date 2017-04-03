@@ -69,13 +69,17 @@ IllusionGame.prototype.loadMessages = function() {
 // Saves a new message on the Firebase DB.
 IllusionGame.prototype.saveMessage = function(e) {
   e.preventDefault();
+  //illusion number
+  var illusionNum = 0;
   // Check that the user entered a message and is signed in.
   if (this.messageInput.value && this.checkSignedInWithMessage()) {
     var currentUser = this.auth.currentUser;
     // Add a new message entry to the Firebase Database.
     this.messagesRef.push({
       name: currentUser.displayName,
-      result: myAnswers.choices[0]
+      email: currentUser.email,
+      test: illusionNum+1,
+      result: myAnswers.choices[illusionNum]
     }).then(function() {
       // Clear message text field and SEND button state.
       IllusionGame.resetMaterialTextfield(this.messageInput);

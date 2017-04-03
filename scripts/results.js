@@ -3,15 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 'use strict';
 
@@ -19,26 +11,21 @@
 function IllusionGame() {
   this.checkSetup();
 
-  var myAnswers = {  choices: [0, 0, 0, 0, 0]};
-
-  //submit content
-  //this.messageForm = document.getElementById('message-form');
   this.messageList = document.getElementById('messages');
-  //this.messageInput = document.getElementById('message');
-  //this.submitButton = document.getElementById('submit');
-
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.illusionOne = {
+    total: 0,
+    answers: [0, 0],
+  };
+  this.illusionOne.i = 0;
 
-  //this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.initFirebase();
-
-  //console.log(myAnswers);
 }
 
 // Sets up shortcuts to Firebase features and initiate firebase auth.
@@ -52,28 +39,110 @@ IllusionGame.prototype.initFirebase = function() {
 };
 
 // Loads chat messages history and listens for upcoming ones.
-IllusionGame.prototype.loadMessages = function() {
+IllusionGame.prototype.loadMessages = function(userEmail) {
   // Reference to the /messages/ database path.
   this.messagesRef = this.database.ref('contrast/illusionOne');
   // Make sure we remove all previous listeners.
   this.messagesRef.off();
-  // Loads the last 12 messages and listen for new ones.
+  // Loads the users
   var setMessage = function(data) {
     var val = data.val();
-    this.displayMessage(data.key, val.name, val.result, val.photoUrl, val.imageUrl);
+    //this.displayMessage(data.key, val.name, val.result);
+    //displays message and sorts results
+    this.displayMessage(data.key, val.result);
+    this.drawResults("viz");
   }.bind(this);
-  this.messagesRef.limitToLast(12).on('child_added', setMessage);
-  this.messagesRef.limitToLast(12).on('child_changed', setMessage);
+  //only show personal results
+  // var query = this.messagesRef.orderByChild('email').equalTo(userEmail);
+  // query.once('value').then(function(data){
+  //   data.forEach(function(dataChild) {
+  //     var key = dataChild.val();
+  //     this.sortData(key.result);
+  //   });
+  // });
+  // this.drawResults();
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_added',  setMessage);
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setMessage);
+
+  this.messagesRef.orderByChild('email').on('child_added',  setMessage);
+  this.messagesRef.orderByChild('email').on('child_changed',  setMessage);
+
 };
 
-// Signs-in Friendly Chat.
+IllusionGame.prototype.sortData = function(value){
+  this.illusionOne.total += value;
+  //this.illusionOne.answers[this.illusionOne.i] = value;
+  if (value <50){
+      this.illusionOne.answers[0] += value;
+  }
+  else{
+    this.illusionOne.answers[1] += value;
+  }
+  console.log(this.illusionOne.total);
+  console.log(this.illusionOne.answers);
+  this.illusionOne.i += 1;
+}
+
+
+IllusionGame.prototype.drawResults = function(divId){
+  if(document.getElementById(divId).innerHTML != ""){
+    document.getElementById(divId).innerHTML = "";
+  }
+  var plotP = this.illusionOne.answers;
+  var total = this.illusionOne.total;
+  //console.log(this.illusionOne.answers, this.illusionOne.total);
+  // //add title
+  // var title = document.createElement("h3");
+  // var node = document.createTextNode("Results:");
+  // title.appendChild(node);
+  //var element = document.getElementById('viz');
+  //element.appendChild(title)
+  //define variables
+  var data = plotP;
+  var name = ["A", "B"];
+  var width = 350,
+      barHeight = 30;
+  var x = d3.scale.linear()
+      .domain([0, d3.max(data)])
+      .range([0, width]);
+  //create svg
+  var svg = d3.select("#"+divId)
+    .append("svg")
+    .attr('class', 'chart')
+    .attr('width', 435)
+    .attr('height', 95);
+  //add labels
+  svg.selectAll("text.name")
+    .data(name)
+    .enter().append("text")
+    .attr("transform", function(d, i) { return "translate(0," + (i * barHeight+20) + ")"; })
+    .attr('class', 'name')
+    .text(String);
+  //create bars
+  var bar = svg.selectAll("g")
+      .data(data)
+      .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(80," + i * barHeight + ")"; });
+  bar.append("rect")
+      .attr("width", x)
+      .attr("height", barHeight - 2);
+  //add percentages
+  bar.append("text")
+      .attr("class", "text")
+      .attr("x", function(d) { return x(d) - 35; })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text(function(d) { return (Math.round( d/total * 100 ) + '%'); });
+  };
+
+// Signs-in to DIGIT.
 IllusionGame.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
 };
 
-// Signs-out of Friendly Chat.
+// Signs-out of DIGIT.
 IllusionGame.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
@@ -83,8 +152,9 @@ IllusionGame.prototype.signOut = function() {
 IllusionGame.prototype.onAuthStateChanged = function(user) {
   if (user) { // User is signed in!
     // Get profile pic and user's name from the Firebase user object.
-    var profilePicUrl = user.photoURL; // Only change these two lines!
-    var userName = user.displayName;   // Only change these two lines!
+    var profilePicUrl = user.photoURL;
+    var userName = user.displayName;
+    var userEmail = user.email;
 
     // Set the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
@@ -99,9 +169,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
     this.signInButton.classList.add('hidden');
 
     // We load currently existing chant messages.
-    this.loadMessages();
-    // We save the Firebase Messaging Device token and enable notifications.
-    //this.saveMessagingDeviceToken();
+    this.loadMessages(userEmail);
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.classList.add('hidden');
@@ -147,8 +215,9 @@ IllusionGame.MESSAGE_TEMPLATE =
 IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageUri) {
+IllusionGame.prototype.displayMessage = function(key, result) {
   var div = document.getElementById(key);
+  var test = this.sortData(result);
   // If an element for that message does not exists yet we create it.
   if (!div) {
     var container = document.createElement('div');
@@ -157,19 +226,16 @@ IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageU
     div.setAttribute('id', key);
     this.messageList.appendChild(div);
   }
-  if (picUrl) {
-    div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
-  }
   div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
-  if (text) { // If the message is text.
-    messageElement.textContent = text;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  }
+  // if (text) { // If the message is text.
+  //   messageElement.textContent = text;
+  //   // Replace all line breaks by <br>.
+  //   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+  // }
   // Show the card fading-in.
-  setTimeout(function() {div.classList.add('visible')}, 1);
-  this.messageList.scrollTop = this.messageList.scrollHeight;
+ // setTimeout(function() {div.classList.add('visible')}, 1);
+ // this.messageList.scrollTop = this.messageList.scrollHeight;
   //this.messageInput.focus();
 };
 
