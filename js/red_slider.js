@@ -65,6 +65,10 @@ function draw() {
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
   window.parent.myAnswers.choices[0] = aSliderOver.value();
+  if(window.parent.myAnswers.choices[0] != 51){
+    window.parent.myAnswers.choices[1] = true;
+    //console.log("hi");
+  }
   //console.log(window.parent.myAnswers.choices[0]);
 
   doText();

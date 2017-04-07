@@ -24,7 +24,8 @@ function IllusionGame() {
   //submit content
   this.messageForm = document.getElementById('message-form');
   this.messageList = document.getElementById('messages');
-  this.messageInput = document.getElementById('message');
+  this.userAnswer = document.getElementById('results');
+  //this.messageInput = document.getElementById('message');
   this.submitButton = document.getElementById('submit');
 
   this.userPic = document.getElementById('user-pic');
@@ -37,8 +38,6 @@ function IllusionGame() {
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.initFirebase();
-
-  //console.log(myAnswers);
 }
 
 // Sets up shortcuts to Firebase features and initiate firebase auth.
@@ -52,7 +51,7 @@ IllusionGame.prototype.initFirebase = function() {
 };
 
 // Loads chat messages history and listens for upcoming ones.
-IllusionGame.prototype.loadMessages = function() {
+IllusionGame.prototype.loadMessages = function(userEmail) {
   // Reference to the /messages/ database path.
   this.messagesRef = this.database.ref('contrast/illusionOne');
   // Make sure we remove all previous listeners.
@@ -60,10 +59,12 @@ IllusionGame.prototype.loadMessages = function() {
   // Loads the last 12 messages and listen for new ones.
   var setMessage = function(data) {
     var val = data.val();
-    this.displayMessage(data.key, val.name, val.result, val.photoUrl, val.imageUrl);
+    this.displayMessage(data.key, val.name, val.result);
   }.bind(this);
-  this.messagesRef.limitToLast(12).on('child_added', setMessage);
-  this.messagesRef.limitToLast(12).on('child_changed', setMessage);
+
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_added',  setMessage);
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setMessage);
+
 };
 
 // Saves a new message on the Firebase DB.
@@ -72,7 +73,7 @@ IllusionGame.prototype.saveMessage = function(e) {
   //illusion number
   var illusionNum = 0;
   // Check that the user entered a message and is signed in.
-  if (this.messageInput.value && this.checkSignedInWithMessage()) {
+  if (myAnswers.choices[1] ==true && this.checkSignedInWithMessage()) {
     var currentUser = this.auth.currentUser;
     // Add a new message entry to the Firebase Database.
     this.messagesRef.push({
@@ -82,9 +83,9 @@ IllusionGame.prototype.saveMessage = function(e) {
       result: myAnswers.choices[illusionNum]
     }).then(function() {
       // Clear message text field and SEND button state.
-      IllusionGame.resetMaterialTextfield(this.messageInput);
+      //IllusionGame.resetMaterialTextfield(this.messageInput);
       this.toggleButton();
-      this.submitButton.classList.add('hidden');
+      //this.submitButton.classList.add('hidden');
     }.bind(this)).catch(function(error) {
       //console.error('Error writing new message to Firebase Database', error);
     });
@@ -110,6 +111,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
     // Get profile pic and user's name from the Firebase user object.
     var profilePicUrl = user.photoURL; // Only change these two lines!
     var userName = user.displayName;   // Only change these two lines!
+    var userEmail = user.email;
 
     // Set the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
@@ -124,7 +126,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
     this.signInButton.classList.add('hidden');
 
     // We load currently existing chant messages.
-    this.loadMessages();
+    this.loadMessages(userEmail);
     // We save the Firebase Messaging Device token and enable notifications.
     //this.saveMessagingDeviceToken();
   } else { // User is signed out!
@@ -162,9 +164,9 @@ IllusionGame.resetMaterialTextfield = function(element) {
 
 // Template for messages.
 IllusionGame.MESSAGE_TEMPLATE =
-    '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
-      '<div class="message"></div>' +
+    '<div class="result-container">' +
+     '<div><p>Your answer:</p></div>' +
+      '<div class="result"></div>' +
       '<div class="name"></div>' +
     '</div>';
 
@@ -172,7 +174,7 @@ IllusionGame.MESSAGE_TEMPLATE =
 IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageUri) {
+IllusionGame.prototype.displayMessage = function(key, name, text) {
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
@@ -182,11 +184,8 @@ IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageU
     div.setAttribute('id', key);
     this.messageList.appendChild(div);
   }
-  if (picUrl) {
-    div.querySelector('.pic').style.backgroundImage = 'url(' + picUrl + ')';
-  }
   div.querySelector('.name').textContent = name;
-  var messageElement = div.querySelector('.message');
+  var messageElement = div.querySelector('.result');
   if (text) { // If the message is text.
     messageElement.textContent = text;
     // Replace all line breaks by <br>.
@@ -195,13 +194,15 @@ IllusionGame.prototype.displayMessage = function(key, name, text, picUrl, imageU
   // Show the card fading-in.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
-  this.messageInput.focus();
+  this.submitButton.classList.add('hidden');
+  //this.messageInput.focus();
 };
 
 // Enables or disables the submit button depending on the values of the input
 // fields.
 IllusionGame.prototype.toggleButton = function() {
-  if (this.messageInput.value) {
+  console.log(myAnswers.choices[1]);
+  if (myAnswers.choices[1] ==true) {
     this.submitButton.removeAttribute('disabled');
   } else {
     this.submitButton.setAttribute('disabled', 'true');

@@ -19,7 +19,7 @@ function IllusionGame() {
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
   this.illusionOne = {
     total: 0,
-    answers: [0, 0],
+    answers: [0, 0, 0, 0, 0],
   };
   this.illusionOne.i = 0;
 
@@ -52,6 +52,13 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
     this.displayMessage(data.key, val.result);
     this.drawResults("viz");
   }.bind(this);
+  // Loads the users
+  var setAnswer = function(data) {
+    var val = data.val();
+    //this.displayMessage(data.key, val.name, val.result);
+    //displays message and sorts results
+    this.displayAnswer(data.key, val.result);
+  }.bind(this);
   //only show personal results
   // var query = this.messagesRef.orderByChild('email').equalTo(userEmail);
   // query.once('value').then(function(data){
@@ -61,22 +68,31 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
   //   });
   // });
   // this.drawResults();
-  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_added',  setMessage);
-  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setMessage);
 
   this.messagesRef.orderByChild('email').on('child_added',  setMessage);
   this.messagesRef.orderByChild('email').on('child_changed',  setMessage);
 
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_added',  setAnswer);
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setAnswer);
 };
 
 IllusionGame.prototype.sortData = function(value){
-  this.illusionOne.total += value;
+  this.illusionOne.total += 1;
   //this.illusionOne.answers[this.illusionOne.i] = value;
-  if (value <50){
-      this.illusionOne.answers[0] += value;
+  if (value <20){
+      this.illusionOne.answers[0] += 1;
+  }
+  else if (value <40){
+    this.illusionOne.answers[1] += 1;
+  }
+  else if (value <60){
+    this.illusionOne.answers[2] += 1;
+  }
+  else if (value <80){
+    this.illusionOne.answers[3] += 1;
   }
   else{
-    this.illusionOne.answers[1] += value;
+    this.illusionOne.answers[4] += 1;
   }
   console.log(this.illusionOne.total);
   console.log(this.illusionOne.answers);
@@ -90,16 +106,10 @@ IllusionGame.prototype.drawResults = function(divId){
   }
   var plotP = this.illusionOne.answers;
   var total = this.illusionOne.total;
-  //console.log(this.illusionOne.answers, this.illusionOne.total);
-  // //add title
-  // var title = document.createElement("h3");
-  // var node = document.createTextNode("Results:");
-  // title.appendChild(node);
-  //var element = document.getElementById('viz');
-  //element.appendChild(title)
+
   //define variables
   var data = plotP;
-  var name = ["A", "B"];
+  var name = ["0-19", "20-39", "40-59", "60-79", "80-100"];
   var width = 350,
       barHeight = 30;
   var x = d3.scale.linear()
@@ -110,7 +120,7 @@ IllusionGame.prototype.drawResults = function(divId){
     .append("svg")
     .attr('class', 'chart')
     .attr('width', 435)
-    .attr('height', 95);
+    .attr('height', 175);
   //add labels
   svg.selectAll("text.name")
     .data(name)
@@ -206,9 +216,8 @@ IllusionGame.resetMaterialTextfield = function(element) {
 // Template for messages.
 IllusionGame.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
-      '<div class="spacing"><div class="pic"></div></div>' +
+    '<div><p>Your Answer:</p></div>' +
       '<div class="message"></div>' +
-      '<div class="name"></div>' +
     '</div>';
 
 // A loading image URL.
@@ -216,8 +225,13 @@ IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
 IllusionGame.prototype.displayMessage = function(key, result) {
-  var div = document.getElementById(key);
   var test = this.sortData(result);
+};
+
+// Displays a Message in the UI.
+IllusionGame.prototype.displayAnswer = function(key, result) {
+  console.log(result);
+  var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
     var container = document.createElement('div');
@@ -226,27 +240,8 @@ IllusionGame.prototype.displayMessage = function(key, result) {
     div.setAttribute('id', key);
     this.messageList.appendChild(div);
   }
-  div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.message');
-  // if (text) { // If the message is text.
-  //   messageElement.textContent = text;
-  //   // Replace all line breaks by <br>.
-  //   messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  // }
-  // Show the card fading-in.
- // setTimeout(function() {div.classList.add('visible')}, 1);
- // this.messageList.scrollTop = this.messageList.scrollHeight;
-  //this.messageInput.focus();
-};
-
-// Enables or disables the submit button depending on the values of the input
-// fields.
-IllusionGame.prototype.toggleButton = function() {
-  if (this.messageInput.value) {
-    this.submitButton.removeAttribute('disabled');
-  } else {
-    this.submitButton.setAttribute('disabled', 'true');
-  }
+  messageElement.textContent = result;
 };
 
 // Checks that the Firebase SDK has been correctly setup and configured.
