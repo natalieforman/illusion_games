@@ -33,8 +33,6 @@ function setup() {
   var position = getPosition(spot)
   
   aSliderOver = createSlider(0, 100, 51);
-  //aSliderOver.position(10, 10);
-  //aSliderOver.position(position.x+SliderX, position.y+SliderY);
   aSliderOver.size(SlideSize);
   
   
@@ -64,12 +62,19 @@ function draw() {
   fill(255,255,255)
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
-  window.parent.myAnswers.choices[0] = aSliderOver.value();
+  //console.log(window.parent.myAnswers.choices[1]);
+  //if they have answered, set it to the answer
+  if(window.parent.myAnswers.choices[1] == true && window.parent.myAnswers.choices[3] != true){
+      aSliderOver.value(window.parent.myAnswers.choices[0]);
+      window.parent.myAnswers.choices[3] = true;
+  }
+  else{
+      window.parent.myAnswers.choices[0] = aSliderOver.value();
+  }
+
   if(window.parent.myAnswers.choices[0] != 51){
     window.parent.myAnswers.choices[1] = true;
-    //console.log("hi");
   }
-  //console.log(window.parent.myAnswers.choices[0]);
 
   doText();
 }

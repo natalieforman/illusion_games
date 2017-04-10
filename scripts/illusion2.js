@@ -3,7 +3,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 'use strict';
 
@@ -11,13 +19,22 @@
 function IllusionGame() {
   this.checkSetup();
 
+  var myAnswers = {  choices: [0, 0, 0, 0, 0]};
+
+  //submit content
+  this.messageForm = document.getElementById('message-form');
   this.messageList = document.getElementById('messages');
+  this.userAnswer = document.getElementById('results');
+  this.results = document.getElementById('show-results');
+  this.submitButton = document.getElementById('submit');
+
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
 
+  this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
   this.initFirebase();
@@ -35,131 +52,52 @@ IllusionGame.prototype.initFirebase = function() {
 
 // Loads chat messages history and listens for upcoming ones.
 IllusionGame.prototype.loadMessages = function(userEmail) {
-  var illusions = {
-                        "illusionOne" : {
-                        Path: 'contrast/illusionOne',
-                        Div: 'viz1',
-                        i: 0,
-                        Answers: {
-                          total: 0,
-                          results: [0, 0, 0, 0, 0]}
-                        }
-                        ,
-                        "illusionTwo" : {
-                          Path: 'contrast/illusionTwo', 
-                          Div: 'viz2',
-                          i: 0,
-                        Answers: {
-                          total: 0,
-                          results: [0, 0, 0, 0, 0]}
-                        }
-                      };
-
-  // Global variables
-    var user_char = {};
-
-    var store_user_char = function(user_char) {
-      var char_obj = user_char;
-        var i = 0
-        for(var key in char_obj){
-            if(char_obj.hasOwnProperty(key)){
-              //iterate over each illusion
-              for(var key2 in char_obj[key]){
-
-                this.displayMessage(key2, char_obj[key][key2].result, illusions[Object.keys(illusions)[i]].Answers);
-                this.drawResults(illusions[Object.keys(illusions)[i]].Div, illusions[Object.keys(illusions)[i]].Answers);
-              }
-                i += 1;
-        }
-    }
+  // Reference to the /messages/ database path.
+  this.messagesRef = this.database.ref('contrast/illusionTwo');
+  // Make sure we remove all previous listeners.
+  this.messagesRef.off();
+  // Loads the last 12 messages and listen for new ones.
+  var setMessage = function(data) {
+    var val = data.val();
+    this.displayMessage(data.key, val.name, val.result);
   }.bind(this);
 
-    var getChar = firebase.database().ref('contrast').orderByKey();
-    getChar.on('value', function(snapshot){
-        snapshot.forEach(function(child){
-            var key = child.key;
-            var value = child.val();
-            user_char[key] = value;
-        });
-       store_user_char(user_char);
-    });
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_added',  setMessage);
+  this.messagesRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setMessage);
+
 };
 
-IllusionGame.prototype.sortData = function(value, illAnswers){
-  illAnswers.total += 1;
+// Saves a new message on the Firebase DB.
+IllusionGame.prototype.saveMessage = function(e) {
+  e.preventDefault();
+  //illusion number
+  var illusionNum = 0;
+  // Check that the user entered a message and is signed in.
+  if (myAnswers.choices[1] ==true && this.checkSignedInWithMessage()) {
+    var currentUser = this.auth.currentUser;
+    // Add a new message entry to the Firebase Database.
+    this.messagesRef.push({
+      name: currentUser.displayName,
+      email: currentUser.email,
+      test: illusionNum+1,
+      result: myAnswers.choices[illusionNum]
+    }).then(function() {
+      // Clear message text field and SEND button state.
+      this.toggleButton();
+    }.bind(this)).catch(function(error) {
+      //console.error('Error writing new message to Firebase Database', error);
+    });
+  }
+};
 
-  if (value <20){
-      illAnswers.results[0] += 1;
-  }
-  else if (value <40){
-    illAnswers.results[1] += 1;
-  }
-  else if (value <60){
-    illAnswers.results[2] += 1;
-  }
-  else if (value <80){
-    illAnswers.results[3] += 1;
-  }
-  else{
-    illAnswers.results[4] += 1;
-  }
-}
-
-
-IllusionGame.prototype.drawResults = function(divId, illAnswers){
-  console.log(illAnswers);
-  if(document.getElementById(divId).innerHTML != ""){
-    document.getElementById(divId).innerHTML = "";
-  }
-  var plotP = illAnswers.results;
-  var total = illAnswers.total;
-
-  //define variables
-  var data = plotP;
-  var name = ["0-19", "20-39", "40-59", "60-79", "80-100"];
-  var width = 350,
-      barHeight = 30;
-  var x = d3.scale.linear()
-      .domain([0, d3.max(data)])
-      .range([0, width]);
-  //create svg
-  var svg = d3.select("#"+divId)
-    .append("svg")
-    .attr('class', 'chart')
-    .attr('width', 435)
-    .attr('height', 175);
-  //add labels
-  svg.selectAll("text.name")
-    .data(name)
-    .enter().append("text")
-    .attr("transform", function(d, i) { return "translate(0," + (i * barHeight+20) + ")"; })
-    .attr('class', 'name')
-    .text(String);
-  //create bars
-  var bar = svg.selectAll("g")
-      .data(data)
-      .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(80," + i * barHeight + ")"; });
-  bar.append("rect")
-      .attr("width", x)
-      .attr("height", barHeight - 2);
-  //add percentages
-  bar.append("text")
-      .attr("class", "text")
-      .attr("x", function(d) { return x(d) - 35; })
-      .attr("y", barHeight / 2)
-      .attr("dy", ".35em")
-      .text(function(d) { return (Math.round( d/total * 100 ) + '%'); });
-  };
-
-// Signs-in to DIGIT.
+// Signs-in Friendly Chat.
 IllusionGame.prototype.signIn = function() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new firebase.auth.GoogleAuthProvider();
   this.auth.signInWithPopup(provider);
 };
 
-// Signs-out of DIGIT.
+// Signs-out of Friendly Chat.
 IllusionGame.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
@@ -187,6 +125,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // We load currently existing chant messages.
     this.loadMessages(userEmail);
+
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.classList.add('hidden');
@@ -222,23 +161,17 @@ IllusionGame.resetMaterialTextfield = function(element) {
 
 // Template for messages.
 IllusionGame.MESSAGE_TEMPLATE =
-    '<div class="message-container">' +
-    '<div><p>Your Answer:</p></div>' +
-      '<div class="message"></div>' +
+    '<div class="result-container">' +
+     '<p>Your answer:</p>' +
+      '<div class="result"></div>' +
+      '<div class="name"></div>' +
     '</div>';
 
 // A loading image URL.
 IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, result, illAnswers) {
-  //console.log(illAnswers.total);
-  var test = this.sortData(result, illAnswers);
-};
-
-// Displays a Message in the UI.
-IllusionGame.prototype.displayAnswer = function(key, result) {
-  console.log(result);
+IllusionGame.prototype.displayMessage = function(key, name, answer) {
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
@@ -248,8 +181,30 @@ IllusionGame.prototype.displayAnswer = function(key, result) {
     div.setAttribute('id', key);
     this.messageList.appendChild(div);
   }
-  var messageElement = div.querySelector('.message');
-  messageElement.textContent = result;
+  //div.querySelector('.name').textContent = name;
+  var messageElement = div.querySelector('.result');
+  messageElement.textContent = answer;
+
+    this.results.classList.add("your-results");
+  // Show the card fading-in.
+  setTimeout(function() {div.classList.add('visible')}, 1);
+  this.messageList.scrollTop = this.messageList.scrollHeight;
+  this.submitButton.classList.add('hidden');
+  //pass the answers to iFrame
+  myAnswers.choices[0] = answer;
+  myAnswers.choices[1] = true;
+  //this.messageInput.focus();
+};
+
+// Enables or disables the submit button depending on the values of the input
+// fields.
+IllusionGame.prototype.toggleButton = function() {
+  console.log(myAnswers.choices[1]);
+  if (myAnswers.choices[1] ==true) {
+    this.submitButton.removeAttribute('disabled');
+  } else {
+    this.submitButton.setAttribute('disabled', 'true');
+  }
 };
 
 // Checks that the Firebase SDK has been correctly setup and configured.

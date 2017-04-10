@@ -25,6 +25,7 @@ function IllusionGame() {
   this.messageForm = document.getElementById('message-form');
   this.messageList = document.getElementById('messages');
   this.userAnswer = document.getElementById('results');
+  this.results = document.getElementById('show-results');
   //this.messageInput = document.getElementById('message');
   this.submitButton = document.getElementById('submit');
 
@@ -167,14 +168,13 @@ IllusionGame.MESSAGE_TEMPLATE =
     '<div class="result-container">' +
      '<div><p>Your answer:</p></div>' +
       '<div class="result"></div>' +
-      '<div class="name"></div>' +
     '</div>';
 
 // A loading image URL.
 IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, name, text) {
+IllusionGame.prototype.displayMessage = function(key, name, answer) {
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
   if (!div) {
@@ -184,17 +184,18 @@ IllusionGame.prototype.displayMessage = function(key, name, text) {
     div.setAttribute('id', key);
     this.messageList.appendChild(div);
   }
-  div.querySelector('.name').textContent = name;
   var messageElement = div.querySelector('.result');
-  if (text) { // If the message is text.
-    messageElement.textContent = text;
-    // Replace all line breaks by <br>.
-    messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-  }
+  messageElement.textContent = answer;
+  
+  this.results.classList.add("your-results");
+
   // Show the card fading-in.
   setTimeout(function() {div.classList.add('visible')}, 1);
   this.messageList.scrollTop = this.messageList.scrollHeight;
   this.submitButton.classList.add('hidden');
+    //pass the answers to iFrame
+  myAnswers.choices[0] = answer;
+  myAnswers.choices[1] = true;
   //this.messageInput.focus();
 };
 

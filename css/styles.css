@@ -249,4 +249,22 @@ input[type=range]::-moz-range-track {
   border: 1px solid #bdc3c7;
   background-color: #fff;
 }
-#viz rect {  fill: #7eb6e4;}
+#viz1 rect, #viz2 rect {  fill: #7eb6e4;}
+
+.your-results{
+  margin-bottom: 15px;
+border: 2px solid #ccc;
+background-color: #efefef;
+padding: 20px;
+}
+#messages p{
+  font-weight: bold;
+}
+iframe{
+  margin: 0 auto;
+  display: block
+}
+.submit-results{
+  margin-bottom: 20px;
+  text-align: center;
+}
