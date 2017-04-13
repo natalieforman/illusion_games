@@ -16,7 +16,7 @@ var Colony = [];
 var button;
 var SurroundVar = 1;
 
-var GapSlider;
+var HeightSlider;
 
 var HueAngle = 300;
 var SatVal = 70;
@@ -31,20 +31,20 @@ function setup() {
   canvas.parent("illusion-holder");
 
 //Sliders
-  GapSlider = createSlider(0, 80, 60);
-  GapSlider.position(20, ScreenH+10);
+  HeightSlider = createSlider(-20, 80, 0.0001);
+  HeightSlider.position(20, ScreenH+40);
 
 //intstuff
     for (var i = 0; i < 2; i++) {
         Colony[i] = new DotDotICA(InitX,i,180);
-    }       
+    }     
  
 }
 
 function draw() {
 
   var TempVal, LeftCol, RightCol;
-  var Gap = GapSlider.value();
+  var H_add = HeightSlider.value();
 
   var LeftBrightness = 20;
   var RightBrightness = 90;
@@ -64,6 +64,7 @@ function draw() {
 
   textAlign(CENTER)
   textSize(50);
+  
   Counter = (Counter + 1)%(FR*2);
     
   TempVal = SineTime(Counter, FR, 100, ampVal, midVal, 1.5, 0);
@@ -75,25 +76,26 @@ function draw() {
   for (var i = 0; i < 2; i = i+1) {
     push();
     translate((i*2 +1)*(ScreenW/4)-RecW/2,ScreenH/2-RecH/2)
-    if (i == 0) {Colony[i].display(ModColor, RightBackColor,Gap,0); }
-    if (i == 1) {Colony[i].display(ModColor, LeftBackColor,Gap,0); }
+    if (i == 0) {Colony[i].display(ModColor, RightBackColor,0,H_add); }
+    if (i == 1) {Colony[i].display(ModColor, LeftBackColor,0,H_add); }
     pop();
   }
 
-    //if they have answered, set it to the answer
+  //if they have answered, set it to the answer
   if(window.parent.myAnswers.choices[1] == true && window.parent.myAnswers.choices[3] != true){
-      GapSlider.value(window.parent.myAnswers.choices[0]);
+      HeightSlider.value(window.parent.myAnswers.choices[0]);
       window.parent.myAnswers.choices[3] = true;
   }
   else{
-      window.parent.myAnswers.choices[0] = GapSlider.value();
+      window.parent.myAnswers.choices[0] = HeightSlider.value();
   }
   //default value
-  if(window.parent.myAnswers.choices[0] != 60){
+  if(window.parent.myAnswers.choices[0] != 0){
     window.parent.myAnswers.choices[1] = true;
   }
 
   doText();
+
 }
 
 function doText() {
@@ -101,16 +103,14 @@ function doText() {
   fill(255);
   textSize(18);
 
-  text("Value: "+ GapSlider.value(), 50,490);
+  text("Value: "+ HeightSlider.value(), 50,490);
 
 }
-
 
 //*******************************
 
 function DotDotICA(InitX, Num, Phase) {
   this.speed = 1;
-
   this.display = function(ModulateColor, ColorFlankRect,G,H) {
     fill(ModulateColor);
     noStroke();
@@ -137,7 +137,7 @@ function ClearSurround(){
     SurroundVar = 1;
   }
 
-  //print(SurroundVar);
+  print(SurroundVar);
 }
 
  

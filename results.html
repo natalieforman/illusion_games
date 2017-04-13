@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Latest compiled and minified Bootstrap files-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="css/chartist.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
@@ -56,43 +57,38 @@
       </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="container text-center main-content">
+    <div class="container text-center main-content" id="results">
         <h3>Results</h3>
           <div class="row">
             <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-6">
-                  <h4>Illusion 1</h4>
-                  <p>The illusion 1 results</p>
-                  <div id="viz1"></div>
-                  <div id="messages"></div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-9 col-sm-offset-2">
-                  <div id="messages">
-                    <span id="message-filler"></span>   
-                  </div>
-                </div>
+              <div class="result">
+                  <h4 id="title0">Illusion 1</h4>
+                  <div id="viz1" class="ct-chart ct-perfect-fourth"></div>
+                  <div id="messages0">
+                    <span id="message-filler"></span> 
+                    </div>  
               </div>
             </div>
           <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-6">
-                  <h4>Illusion 2</h4>
-                  <p>The illusion 2 results</p>
-                  <div id="viz2"></div>
-                  <div id="messages"></div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-9 col-sm-offset-2">
-                  <div id="messages">
+            <div class="result">
+                  <h4 id="title1">Illusion 2</h4>
+                  <div id="viz2" class="ct-chart ct-perfect-fourth"></div>
+                  <div id="messages1">
                     <span id="message-filler"></span>   
                   </div>
                 </div>
-              </div>
           </div>
+        </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="result">
+                  <h4 id="title2">Illusion 3</h4>
+                  <div id="viz3" class="ct-chart ct-perfect-fourth"></div>
+                  <div id="messages2">
+                    <span id="message-filler"></span> 
+                    </div>  
+              </div>
+            </div>
         </div>
     </div><!-- /.container -->
     <footer class="footer">
@@ -113,7 +109,7 @@
   };
   firebase.initializeApp(config);
 </script>
-
+ <script src="js/chartist.min.js"></script>
 <script src="scripts/results.js"></script>
 </body>
 </html>

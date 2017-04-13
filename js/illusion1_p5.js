@@ -27,15 +27,9 @@ function setup() {
     X[i] = width/4+ random(width/2);
     Y[i] = TopYheight/4+ random(TopYheight/2);
   }
-
-  
-  var spot = document.getElementById("illusion-holder");
-  var position = getPosition(spot)
   
   aSliderOver = createSlider(0, 100, 51);
-  aSliderOver.size(SlideSize);
-  
-  
+  aSliderOver.size(SlideSize);  
 }
 
 function draw() {
@@ -62,7 +56,6 @@ function draw() {
   fill(255,255,255)
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
-  //console.log(window.parent.myAnswers.choices[1]);
   //if they have answered, set it to the answer
   if(window.parent.myAnswers.choices[1] == true && window.parent.myAnswers.choices[3] != true){
       aSliderOver.value(window.parent.myAnswers.choices[0]);
