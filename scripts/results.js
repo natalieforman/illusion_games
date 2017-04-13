@@ -11,7 +11,7 @@
 function IllusionGame() {
   this.checkSetup();
 
-  this.messageList = document.getElementById('messages');
+  //this.messageList = document.getElementById('messages');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -37,18 +37,41 @@ IllusionGame.prototype.initFirebase = function() {
 IllusionGame.prototype.loadMessages = function(userEmail) {
   var illusions = {
                         "illusionOne" : {
-                        Path: 'contrast/illusionOne',
-                        Div: 'viz1',
+                        Title: 'Color Contrast One',
+                        Div: '#viz1',
                         i: 0,
+                        Data: {
+                            min: 0,
+                            max: 100,
+                            range: [0,20,40,60,80,100]
+                          },
                         Answers: {
                           total: 0,
                           results: [0, 0, 0, 0, 0]}
                         }
                         ,
                         "illusionTwo" : {
-                          Path: 'contrast/illusionTwo', 
-                          Div: 'viz2',
+                          Title: 'Color Contrast Two', 
+                          Div: '#viz2',
                           i: 0,
+                          Data: {
+                            min: 0,
+                            max: 80,
+                            range: [0,20,40,60,80]
+                          },
+                        Answers: {
+                          total: 0,
+                          results: [0, 0, 0, 0]}
+                        },
+                        "illusionThree" : {
+                          Title: 'Color Contrast Three', 
+                          Div: '#viz3',
+                          i: 0,
+                          Data: {
+                            min: -20,
+                            max: 80,
+                            range: [-20, 0, 20, 40, 60, 80]
+                          },
                         Answers: {
                           total: 0,
                           results: [0, 0, 0, 0, 0]}
@@ -60,16 +83,16 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
 
     var store_user_char = function(user_char) {
       var char_obj = user_char;
-        var i = 0
         for(var key in char_obj){
             if(char_obj.hasOwnProperty(key)){
               //iterate over each illusion
               for(var key2 in char_obj[key]){
-
-                this.displayMessage(key2, char_obj[key][key2].result, illusions[Object.keys(illusions)[i]].Answers);
-                this.drawResults(illusions[Object.keys(illusions)[i]].Div, illusions[Object.keys(illusions)[i]].Answers);
+                //key, answer, Answers
+                //set the value of the illusion
+                var j = char_obj[key][key2].test-1;
+                this.displayMessage(key2, illusions[Object.keys(illusions)[j]].Data, char_obj[key][key2].email, char_obj[key][key2].result, illusions[Object.keys(illusions)[j]].Answers, j);
+                this.drawResults(illusions[Object.keys(illusions)[j]].Data, illusions[Object.keys(illusions)[j]].Div, illusions[Object.keys(illusions)[j]].Answers);
               }
-                i += 1;
         }
     }
   }.bind(this);
@@ -83,73 +106,59 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
         });
        store_user_char(user_char);
     });
+
 };
 
-IllusionGame.prototype.sortData = function(value, illAnswers){
+IllusionGame.prototype.sortData = function(data, value, illAnswers){
   illAnswers.total += 1;
+  var range = data.range;
 
-  if (value <20){
-      illAnswers.results[0] += 1;
+  var length = data.range.length;
+  for (var i = 0; i < length; i++){
+    if (value < range[i+1]){
+      illAnswers.results[i] += 1;
+      break;
+    }
   }
-  else if (value <40){
-    illAnswers.results[1] += 1;
   }
-  else if (value <60){
-    illAnswers.results[2] += 1;
-  }
-  else if (value <80){
-    illAnswers.results[3] += 1;
-  }
-  else{
-    illAnswers.results[4] += 1;
-  }
-}
 
 
-IllusionGame.prototype.drawResults = function(divId, illAnswers){
-  console.log(illAnswers);
-  if(document.getElementById(divId).innerHTML != ""){
-    document.getElementById(divId).innerHTML = "";
+IllusionGame.prototype.drawResults = function(dataR, divId, illAnswers){
+    //define labels
+  var divide = illAnswers.total;
+  var graphAnswers = [];
+  for (var j=0; j<illAnswers.results.length; j++){
+    graphAnswers[j] = Math.round((illAnswers.results[j]/divide).toFixed(2)*100);
   }
-  var plotP = illAnswers.results;
-  var total = illAnswers.total;
 
-  //define variables
-  var data = plotP;
-  var name = ["0-19", "20-39", "40-59", "60-79", "80-100"];
-  var width = 350,
-      barHeight = 30;
-  var x = d3.scale.linear()
-      .domain([0, d3.max(data)])
-      .range([0, width]);
-  //create svg
-  var svg = d3.select("#"+divId)
-    .append("svg")
-    .attr('class', 'chart')
-    .attr('width', 435)
-    .attr('height', 175);
-  //add labels
-  svg.selectAll("text.name")
-    .data(name)
-    .enter().append("text")
-    .attr("transform", function(d, i) { return "translate(0," + (i * barHeight+20) + ")"; })
-    .attr('class', 'name')
-    .text(String);
-  //create bars
-  var bar = svg.selectAll("g")
-      .data(data)
-      .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(80," + i * barHeight + ")"; });
-  bar.append("rect")
-      .attr("width", x)
-      .attr("height", barHeight - 2);
-  //add percentages
-  bar.append("text")
-      .attr("class", "text")
-      .attr("x", function(d) { return x(d) - 35; })
-      .attr("y", barHeight / 2)
-      .attr("dy", ".35em")
-      .text(function(d) { return (Math.round( d/total * 100 ) + '%'); });
+  var hyph = "-";
+  var name =[];
+  for (var i =0; i < dataR.range.length-1; i++){
+    var one = dataR.range[i].toString();
+    var two = dataR.range[i+1].toString();
+    var oneTwo = one.concat(hyph, two);
+    name[i] = oneTwo;
+  }
+console.log(graphAnswers);
+var graph = {
+  labels: name,
+  series: [graphAnswers]
+};
+
+var options = {
+scaleMinSpace: 40,
+fullWidth: true,
+  chartPadding: {
+    right: 40
+  },
+  axisY: {
+    onlyInteger: true
+  },
+  high: 100,
+  low: 0
+};
+
+new Chartist.Bar(divId, graph, options);
   };
 
 // Signs-in to DIGIT.
@@ -172,6 +181,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
     var profilePicUrl = user.photoURL;
     var userName = user.displayName;
     var userEmail = user.email;
+    this.userEmail = user.email;
 
     // Set the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
@@ -231,13 +241,15 @@ IllusionGame.MESSAGE_TEMPLATE =
 IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, result, illAnswers) {
-  //console.log(illAnswers.total);
-  var test = this.sortData(result, illAnswers);
+IllusionGame.prototype.displayMessage = function(key, data, email, result, illAnswers, i) {
+  if (email == this.userEmail){
+    this.displayAnswer(key, result, i);
+  }
+  var test = this.sortData(data, result, illAnswers);
 };
 
 // Displays a Message in the UI.
-IllusionGame.prototype.displayAnswer = function(key, result) {
+IllusionGame.prototype.displayAnswer = function(key, result, i) {
   console.log(result);
   var div = document.getElementById(key);
   // If an element for that message does not exists yet we create it.
@@ -246,7 +258,8 @@ IllusionGame.prototype.displayAnswer = function(key, result) {
     container.innerHTML = IllusionGame.MESSAGE_TEMPLATE;
     div = container.firstChild;
     div.setAttribute('id', key);
-    this.messageList.appendChild(div);
+    var entry = document.getElementById('messages'+i);
+    entry.appendChild(div);
   }
   var messageElement = div.querySelector('.message');
   messageElement.textContent = result;
