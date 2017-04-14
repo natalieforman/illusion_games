@@ -11,7 +11,6 @@
 function IllusionGame() {
   this.checkSetup();
 
-  //this.messageList = document.getElementById('messages');
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -36,47 +35,22 @@ IllusionGame.prototype.initFirebase = function() {
 // Loads chat messages history and listens for upcoming ones.
 IllusionGame.prototype.loadMessages = function(userEmail) {
   var illusions = {
-                        "illusionOne" : {
-                        Title: 'Color Contrast One',
-                        Div: '#viz1',
-                        i: 0,
-                        Data: {
-                            min: 0,
-                            max: 100,
-                            range: [0,20,40,60,80,100]
-                          },
-                        Answers: {
-                          total: 0,
-                          results: [0, 0, 0, 0, 0]}
-                        }
-                        ,
-                        "illusionTwo" : {
-                          Title: 'Color Contrast Two', 
-                          Div: '#viz2',
-                          i: 0,
-                          Data: {
-                            min: 0,
-                            max: 80,
-                            range: [0,20,40,60,80]
-                          },
-                        Answers: {
-                          total: 0,
-                          results: [0, 0, 0, 0]}
-                        },
-                        "illusionThree" : {
-                          Title: 'Color Contrast Three', 
-                          Div: '#viz3',
-                          i: 0,
-                          Data: {
-                            min: -20,
-                            max: 80,
-                            range: [-20, 0, 20, 40, 60, 80]
-                          },
-                        Answers: {
-                          total: 0,
-                          results: [0, 0, 0, 0, 0]}
-                        }
-                      };
+                    "illusionOne" : {
+                    Div: '#viz1',
+                    Buckets: [0,20,40,60,80,100],
+                    Answers: [0, 0, 0, 0, 0]
+                    },
+                    "illusionTwo" : {
+                      Div: '#viz2',
+                      Buckets: [0,20,40,60,80],
+                      Answers: [0, 0, 0, 0]
+                      },
+                    "illusionThree" : {
+                      Div: '#viz3',
+                      Buckets: [-20, 0, 20, 40, 60, 80],
+                      Answers: [0, 0, 0, 0, 0]
+                      }
+                  };
 
   // Global variables
     var user_char = {};
@@ -90,8 +64,14 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                 //key, answer, Answers
                 //set the value of the illusion
                 var j = char_obj[key][key2].test-1;
-                this.displayMessage(key2, illusions[Object.keys(illusions)[j]].Data, char_obj[key][key2].email, char_obj[key][key2].result, illusions[Object.keys(illusions)[j]].Answers, j);
-                this.drawResults(illusions[Object.keys(illusions)[j]].Data, illusions[Object.keys(illusions)[j]].Div, illusions[Object.keys(illusions)[j]].Answers);
+                  
+                //if they are the user, display answer
+                if (char_obj[key][key2].email == this.userEmail){
+                  this.displayAnswer(key2, char_obj[key][key2].result, j);
+                }
+                var thisData = illusions[Object.keys(illusions)[j]];
+                this.sortData(thisData.Buckets, char_obj[key][key2].result, thisData.Answers);
+                this.drawResults(thisData.Buckets, thisData.Div, thisData.Answers);
               }
         }
     }
@@ -109,56 +89,86 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
 
 };
 
-IllusionGame.prototype.sortData = function(data, value, illAnswers){
-  illAnswers.total += 1;
-  var range = data.range;
 
-  var length = data.range.length;
+/*Sort the data into the proper array spot*/
+/*Takes in the bucket values, the data value and the results array*/
+IllusionGame.prototype.sortData = function(buckets, value, answerCount){
+  //the values we are sorting the results with
+  var range = buckets;
+
+  //check each bucket
+  var length = range.length;
   for (var i = 0; i < length; i++){
+    //if the value is less than the max then add one to that bucket
     if (value < range[i+1]){
-      illAnswers.results[i] += 1;
+      answerCount[i] += 1;
       break;
     }
   }
-  }
+};
 
 
-IllusionGame.prototype.drawResults = function(dataR, divId, illAnswers){
-    //define labels
-  var divide = illAnswers.total;
+IllusionGame.prototype.drawResults = function(dataR, divId, totalResult){
+  //turn values into percent
+  var divide = totalResult.reduce(function(a, b) { return a + b; }, 0);
   var graphAnswers = [];
-  for (var j=0; j<illAnswers.results.length; j++){
-    graphAnswers[j] = Math.round((illAnswers.results[j]/divide).toFixed(2)*100);
+  for (var j=0; j<totalResult.length; j++){
+    graphAnswers[j] = Math.round((totalResult[j]/divide).toFixed(2)*100);
   }
 
+  //create labels
   var hyph = "-";
   var name =[];
-  for (var i =0; i < dataR.range.length-1; i++){
-    var one = dataR.range[i].toString();
-    var two = dataR.range[i+1].toString();
+  for (var i =0; i < dataR.length-1; i++){
+    var one = dataR[i].toString();
+    var two = dataR[i+1].toString();
     var oneTwo = one.concat(hyph, two);
     name[i] = oneTwo;
   }
-console.log(graphAnswers);
-var graph = {
-  labels: name,
-  series: [graphAnswers]
-};
 
-var options = {
-scaleMinSpace: 40,
-fullWidth: true,
-  chartPadding: {
-    right: 40
-  },
-  axisY: {
-    onlyInteger: true
-  },
-  high: 100,
-  low: 0
-};
+  var graph = {
+    labels: name,
+    series: [graphAnswers]
+  };
 
-new Chartist.Bar(divId, graph, options);
+  var options = {
+  scaleMinSpace: 40,
+  fullWidth: true,
+    chartPadding: {
+      bottom: 20,
+      right: 40
+    },
+    axisY: {
+      onlyInteger: true
+    },
+    high: 100,
+    low: 0,
+    plugins: [
+      Chartist.plugins.ctAxisTitle({
+        axisX: {
+          axisTitle: 'Value',
+          axisClass: 'ct-axis-title',
+          offset: {
+            x: 0,
+            y: 40
+          },
+          textAnchor: 'middle'
+        },
+        axisY: {
+          axisTitle: 'Percent (%)',
+          axisClass: 'ct-axis-title',
+          offset: {
+            x: 0,
+            y: 20
+          },
+          textAnchor: 'middle',
+          flipTitle: true
+            }
+          })
+        ]
+      };
+
+    new Chartist.Bar(divId, graph, options);
   };
 
 // Signs-in to DIGIT.
@@ -224,45 +234,25 @@ IllusionGame.prototype.checkSignedInWithMessage = function() {
   return false;
 };
 
-// Resets the given MaterialTextField.
-IllusionGame.resetMaterialTextfield = function(element) {
-  element.value = '';
-  element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
-};
-
-// Template for messages.
-IllusionGame.MESSAGE_TEMPLATE =
-    '<div class="message-container">' +
-    '<div><p>Your Answer:</p></div>' +
-      '<div class="message"></div>' +
+// Template for result.
+IllusionGame.RESULT_TEMPLATE =
+    '<div class="result-container">' +
+    '<p class="answer">Your Answer: ' +
+      '<span class="result"></span></p>' +
     '</div>';
 
-// A loading image URL.
-IllusionGame.LOADING_IMAGE_URL = 'https://www.google.com/images/spin-32.gif';
-
-// Displays a Message in the UI.
-IllusionGame.prototype.displayMessage = function(key, data, email, result, illAnswers, i) {
-  if (email == this.userEmail){
-    this.displayAnswer(key, result, i);
-  }
-  var test = this.sortData(data, result, illAnswers);
-};
-
-// Displays a Message in the UI.
-IllusionGame.prototype.displayAnswer = function(key, result, i) {
-  console.log(result);
+// Displays the answer in the UI.
+IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
+  //console.log(result);
   var div = document.getElementById(key);
-  // If an element for that message does not exists yet we create it.
-  if (!div) {
-    var container = document.createElement('div');
-    container.innerHTML = IllusionGame.MESSAGE_TEMPLATE;
-    div = container.firstChild;
-    div.setAttribute('id', key);
-    var entry = document.getElementById('messages'+i);
-    entry.appendChild(div);
-  }
-  var messageElement = div.querySelector('.message');
-  messageElement.textContent = result;
+  var container = document.createElement('div');
+  container.innerHTML = IllusionGame.RESULT_TEMPLATE;
+  div = container.firstChild;
+  div.setAttribute('id', key);
+  var entry = document.getElementById('results'+illusionNum);
+  entry.appendChild(div);
+  var resElement = div.querySelector('.result');
+  resElement.textContent = result;
 };
 
 // Checks that the Firebase SDK has been correctly setup and configured.
