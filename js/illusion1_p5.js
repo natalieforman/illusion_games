@@ -57,16 +57,16 @@ function draw() {
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
   //if they have answered, set it to the answer
-  if(window.parent.myAnswers.choices[1] == true && window.parent.myAnswers.choices[3] != true){
-      aSliderOver.value(window.parent.myAnswers.choices[0]);
-      window.parent.myAnswers.choices[3] = true;
+  if(window.parent.myAnswers.submit == true && window.parent.myAnswers.slider != true){
+      aSliderOver.value(window.parent.myAnswers.answer);
+      window.parent.myAnswers.slider = true;
   }
   else{
-      window.parent.myAnswers.choices[0] = aSliderOver.value();
+      window.parent.myAnswers.answer = aSliderOver.value();
   }
 
-  if(window.parent.myAnswers.choices[0] != 51){
-    window.parent.myAnswers.choices[1] = true;
+  if(window.parent.myAnswers.answer != 51){
+    window.parent.myAnswers.submit = true;
   }
 
   doText();

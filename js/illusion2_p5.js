@@ -81,16 +81,16 @@ function draw() {
   }
 
     //if they have answered, set it to the answer
-  if(window.parent.myAnswers.choices[1] == true && window.parent.myAnswers.choices[3] != true){
-      GapSlider.value(window.parent.myAnswers.choices[0]);
-      window.parent.myAnswers.choices[3] = true;
+  if(window.parent.myAnswers.submit == true && window.parent.myAnswers.slider != true){
+      GapSlider.value(window.parent.myAnswers.answer);
+      window.parent.myAnswers.slider = true;
   }
   else{
-      window.parent.myAnswers.choices[0] = GapSlider.value();
+      window.parent.myAnswers.answer = GapSlider.value();
   }
   //default value
-  if(window.parent.myAnswers.choices[0] != 60){
-    window.parent.myAnswers.choices[1] = true;
+  if(window.parent.myAnswers.answer != 60){
+    window.parent.myAnswers.submit = true;
   }
 
   doText();

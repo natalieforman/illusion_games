@@ -124,20 +124,15 @@ body {
 	position: relative;
 }
 
-.illusion-footer .col-sm-4{
+.illusion-footer .illusion-nav{
 	background-color: #ccc;
 	color: #000;
 	padding-top: 25px;
 	height: 70px;
 	text-align: center;
+  font-size: 20px;
 }
-.illusion-footer .col-sm-4 a{
-	color: #000;
-}
-.illusion-footer .current-illusion{
-	font-size: 18px;
-}
-.illusion-footer .col-sm-4.illusion-nav:hover, .illusion-footer .col-sm-4 a:hover{
+.illusion-footer .illusion-nav:hover{
 	background-color: #aaa;
 	text-decoration: none;
 }
@@ -177,21 +172,6 @@ body {
   line-height: 36px;
   padding-right: 10px;
   padding-left: 20px;
-}
-#image-form #submitImage {
-  width: auto;
-  padding: 0 6px 0 1px;
-  min-width: 0;
-}
-#image-form #submitImage .material-icons {
-  top: -1px;
-}
-.message img {
-  max-width: 300px;
-  max-height: 200px;
-}
-#mediaCapture {
-  display: none;
 }
 iframe, object, embed {
     max-width: 100%;
@@ -287,4 +267,35 @@ iframe{
 
 .ct-label{
     font-size: 11px;
+}
+
+text.ct-axis-title{
+  color: #ccc;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.answer{
+  font-weight: bold;
+}
+
+button#submit{
+  border: 3px solid #0067A6;
+padding: 15px;
+background-color: #0067A6;
+color: #fff;
+font-weight: bold;
+}
+
+button#submit:hover{
+  background-color: #00ABD8;
+}
+
+.instruct{
+  background-color: #eee;
+  margin-bottom: 15px;
+  padding: 10px;
+}
+.instruct .instruction{
+  font-size: 11px;
 }
