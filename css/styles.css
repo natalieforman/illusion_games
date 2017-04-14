@@ -7,13 +7,40 @@ Yellow:#EFC028;
 Orange:#F2572D;
 */
 
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 @import url('https://fonts.googleapis.com/css?family=Merriweather:300,400,700');
 
-h3, h4{
-	font-family: 'Merriweather', serif;
+h3{
+	font-family: 'Lato', serif;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: left;
+}
+h4{
+  font-weight: bold;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  font-family: "Lato", sans-serif;
+  margin-bottom: 60px;
+  background-color: #eee;
+}
+.main-content{
+  padding-bottom: 20px;
+}
+.warn{
+  color: #fff;
+  background-color: red;
+  padding: 5px;
 }
 
-/*Nav*/
+/****************/
+/*****Nav********/
+/****************/
 .navbar.navbar-default{
 	background-color:#008972; 
 	border: none;
@@ -30,8 +57,14 @@ h3, h4{
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover{
 	color: #fff;
 }
+.dropdown-menu{
+  background-color: #008972;
+}
 
-/*Side Nav*/
+/****************/
+/****Side Nav****/
+/****************/
+
 .sidenav .nav {
   background-color: #f1f1f1;
 }
@@ -42,6 +75,18 @@ h3, h4{
 	background-color: #aaa;
 	color: #fff;
 }
+.sidenav .nav-ready a{
+  color: #008972;
+}
+.sidenav .nav-finished a{
+  color: #aaa;
+}
+
+
+/****************/
+/***QUESTION*****/
+/****************/
+
 .row.content.illusion-page {
 	height: 500px
 }
@@ -52,55 +97,67 @@ h3, h4{
 	margin-top: 20px;
 	padding: 10px;
 }
-.sidenav .nav-ready a{
-	color: #008972;
-}
-.sidenav .nav-finished a{
-	color: #aaa;
-}
 
-.collection-illusion div{
-	background-color: #eee;
+/****************/
+/***CONTRAST*****/
+/****************/
+.collect-illusion{
+	background-color: #fff;
 	border-radius: 3px;
 	padding: 10px;
-
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: left;
+  font-size: 24px;
 }
-/*Homepage Styles*/
+.collect-illusion a{
+  color: #000;
+}
+.collect-illusion a:hover{
+  text-decoration: none;
+  color: #F2572D;
+}
+
+/****************/
+/***INDEX*****/
+/****************/
 
 .illusion-category{
-	background-color: #eee;
-	border: 2px solid #fff;
+	background-color: #fff;
+	border: 1px solid #ccc;
 	border-radius: 5px;
 	margin-top: 5px;
+}
+.illusion-category h4{
+  font-family: "Merriweather", serif;
+  font-size: 28px;
+}
+.illusion-category a h4{
+  color: #000;
+  padding: 15px;
+}
+.illusion-category a h4:hover, .illusion-category a:hover{
+  color: #F2572D;
+  text-decoration: none;
 }
 
 .main-content .row:not(:first-child){
 	margin-top: 20px;
 }
 
-.progress{
-	margin-bottom: 10px;
-}
-
 .illusion-category .btn.btn-default.results{
 	margin: 10px;
 }
+.back{
+  height: 200px;
+  background-image: url("../images/contrast_back.jpg");
+  background-size: cover;
+}
 
-@media (min-width:768px){ .illusion-category{height: 250px;} }
-@media (min-width:992px){ .illusion-category{height: 270px;} }
-@media (min-width:1200px){ .illusion-category{height: 320px;} }
-
-
-/*Footer Styles*/
+/****************/
+/***FOOTER*****/
+/****************/
 /*http://stackoverflow.com/questions/19756997/how-to-create-a-sticky-footer-that-plays-well-with-bootstrap-3/23833625#23833625*/
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
 .footer {
   position: absolute;
   bottom: 0;
@@ -109,20 +166,12 @@ body {
   text-align: center;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #008972;
-  color: #fff;
-}
-
-.main-content{
-	padding-bottom: 20px;
+  background-color: #ccc;
+  color: #000;
 }
 
 @media (max-width:768px){ .footer{position:absolute;width:100%;} }
 @media (min-width:768px){ .footer{position:absolute;bottom:0;height:60px;width:100%;}}
-
-#illusion-holder{
-	position: relative;
-}
 
 .illusion-footer .illusion-nav{
 	background-color: #ccc;
@@ -136,7 +185,12 @@ body {
 	background-color: #aaa;
 	text-decoration: none;
 }
-/*FIREBASE*/
+
+
+/****************/
+/***FIREBASE*****/
+/****************/
+
 .material-icons {
   font-size: 36px;
   top: 8px;
@@ -173,28 +227,6 @@ body {
   padding-right: 10px;
   padding-left: 20px;
 }
-iframe, object, embed {
-    max-width: 100%;
-}
-@media screen and (max-width: 610px) {
-  header {
-    height: 113px;
-    padding-bottom: 80px !important;
-  }
-  #user-container {
-    top: 72px;
-    background-color: rgb(3,155,229);
-    height: 38px;
-    padding-top: 3px;
-    padding-right: 2px;
-  }
-  #user-container #user-pic {
-    top: 2px;
-    width: 33px;
-    height: 33px;
-    background-size: 33px;
-  }
-}
 .mdl-button {
   background:0 0;
   border:none;
@@ -221,6 +253,32 @@ iframe, object, embed {
   line-height:36px;
   vertical-align:middle
 }
+iframe, object, embed {
+    max-width: 100%;
+}
+@media screen and (max-width: 610px) {
+  header {
+    height: 113px;
+    padding-bottom: 80px !important;
+  }
+  #user-container {
+    top: 72px;
+    background-color: rgb(3,155,229);
+    height: 38px;
+    padding-top: 3px;
+    padding-right: 2px;
+  }
+  #user-container #user-pic {
+    top: 2px;
+    width: 33px;
+    height: 33px;
+    background-size: 33px;
+  }
+}
+iframe{
+  margin: 0 auto;
+  display: block
+}
 
 input[type=range]::-moz-range-track {
   height: 10px;
@@ -229,6 +287,10 @@ input[type=range]::-moz-range-track {
   border: 1px solid #bdc3c7;
   background-color: #fff;
 }
+
+/****************/
+/***RESULTS*****/
+/****************/
 #results rect {  fill: #7eb6e4;}
 
 .your-results{
@@ -237,27 +299,43 @@ border: 2px solid #ccc;
 background-color: #efefef;
 padding: 20px;
 }
-#messages p{
-  font-weight: bold;
-}
-iframe{
-  margin: 0 auto;
-  display: block
-}
+
 .submit-results{
   margin-bottom: 20px;
   text-align: center;
 }
 
-.result{
-  background-color: #eee;
+.result-box{
+  background-color: #fff;
   padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
-
-.warn{
-  color: #fff;
-  background-color: red;
+.result_answer{
+  background-color: #a9dbd3;
   padding: 5px;
+  color: #333;
+  margin-top: 15px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
+.img-result{
+  width: 70px;
+  display: inline-block;
+}
+#results h4{
+  display: inline-block;
+  padding-left: 5px;
+}
+#results h4.section{
+  font-size: 24px;
+  color: #00ABD8;
+}
+#results a{
+  color: #000;
+}
+#results a:hover{
+  text-decoration: none;
 }
 
 .ct-series-a .ct-bar{
@@ -277,6 +355,8 @@ text.ct-axis-title{
 
 .answer{
   font-weight: bold;
+  margin: 0px;
+  padding: 5px 0;
 }
 
 button#submit{

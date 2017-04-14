@@ -236,7 +236,7 @@ IllusionGame.prototype.checkSignedInWithMessage = function() {
 
 // Template for result.
 IllusionGame.RESULT_TEMPLATE =
-    '<div class="result-container">' +
+    '<div class="result-container result_answer">' +
     '<p class="answer">Your Answer: ' +
       '<span class="result"></span></p>' +
     '</div>';

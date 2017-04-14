@@ -48,8 +48,8 @@ function draw() {
 
   var LeftBrightness = 20;
   var RightBrightness = 90;
-  var LeftBackColor = color(160, SatVal, LeftBrightness);
-  var RightBackColor = color(160, SatVal,RightBrightness);
+  var LeftBackColor = color(200, SatVal, LeftBrightness);
+  var RightBackColor = color(200, SatVal,RightBrightness);
 
   var midVal = (LeftBrightness+RightBrightness)/200;
   var ampVal = .55*midVal;
@@ -68,7 +68,7 @@ function draw() {
   Counter = (Counter + 1)%(FR*2);
     
   TempVal = SineTime(Counter, FR, 100, ampVal, midVal, 1.5, 0);
-  var ModColor = color(160, SatVal,TempVal);
+  var ModColor = color(200, SatVal,TempVal);
   
   LeftCol =100;
   RightCol = 0;
