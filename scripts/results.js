@@ -1,10 +1,3 @@
-/**
- * Copyright 2015 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- */
 'use strict';
 
 // Initializes Illusion Game.
@@ -16,6 +9,7 @@ function IllusionGame() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+  this.warning = document.getElementById('warn');
 
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
   this.signInButton.addEventListener('click', this.signIn.bind(this));
@@ -182,6 +176,7 @@ IllusionGame.prototype.signIn = function() {
 IllusionGame.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
+  location.reload();
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
@@ -204,6 +199,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Hide sign-in button.
     this.signInButton.classList.add('hidden');
+        this.warning.classList.remove('warn');
+    this.warning.innerHTML = "";
 
     // We load currently existing chant messages.
     this.loadMessages(userEmail);
@@ -215,6 +212,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Show sign-in button.
     this.signInButton.classList.remove('hidden');
+            this.warning.classList.add('warn');
+    this.warning.innerHTML = "Please sign-in before proceeding";
   }
 };
 
@@ -243,7 +242,6 @@ IllusionGame.RESULT_TEMPLATE =
 
 // Displays the answer in the UI.
 IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
-  //console.log(result);
   var div = document.getElementById(key);
   var container = document.createElement('div');
   container.innerHTML = IllusionGame.RESULT_TEMPLATE;

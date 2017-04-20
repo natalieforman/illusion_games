@@ -74,13 +74,18 @@
     </nav>
 
     <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+              <div id="warn"></div>
+        </div>
+      </div>
     <div class="row content illusion-page">
         <div class="col-sm-2 sidenav">
                 <ul class="nav nav-stacked">
                     <li class="nav-ready active"><a href="illusion1.html">Illusion 1</a></li>
                     <li class="nav-ready"><a href="illusion2.html">Illusion 2</a></li>
                     <li class="nav-ready"><a href="illusion3.html">Illusion 3</a></li>
-                    <li class="nav-ready"><a href="illuison4.html">Illusion 4</a></li>
+                    <li class="nav-ready"><a href="illusion4.html">Illusion 4</a></li>
                 </ul><br>
         </div>
 
@@ -88,9 +93,12 @@
 
             <h2>Color Contrast 1</h2>
             <p>This is the first contrast test</p>
-             <iframe src="iframe1.html" id="iframeid" width="575" height="650" frameBorder="0"></iframe> 
+            <div id="illusion-frame1" class="row illusion-frame">
+             <iframe src="iframe1.html" id="iframeid" width="575" height="650" allowfullscreen="" frameborder="0"></iframe> </div>
         </div>
     </div>
+  </div>
+  <div class="container">
       <div class="row">
         <div class="col-sm-9 col-sm-offset-2 instruct illusion-holder">
           <p class="instruction">INSTRUCTIONS</p>

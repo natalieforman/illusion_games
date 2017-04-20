@@ -20,6 +20,10 @@
 @import url('https://fonts.googleapis.com/css?family=Exo:400,700,900');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
 
+#illusion-frame2.illusion-frame, #illusion-frame3.illusion-frame{
+  padding-bottom: 550px;
+}
+
 /****************/
 /*****Globals****/
 /****************/
@@ -28,6 +32,9 @@ h2{
   font-family: 'Exo', serif;
   font-weight: 900;
   font-size: 36px;
+}
+.illusion-holder h2{
+  padding-top: 10px;
 }
 h3{
 	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
@@ -56,6 +63,8 @@ body {
   color: #fff;
   background-color: red;
   padding: 5px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 /****************/
@@ -70,6 +79,9 @@ body {
 	border: none;
 	border-radius: 0px;
 	color: #fff
+}
+.navbar-default .navbar-toggle .icon-bar{
+  background-color: #fff;
 }
 .navbar.navbar-default a, .navbar-default .navbar-nav > li > a{
 	color: #fff;
@@ -151,9 +163,9 @@ body {
 /***QUESTION*****/
 /****************/
 
-.row.content.illusion-page {
+/*.row.content.illusion-page {
 	height: 500px
-}
+}*/
 .question-text{
 	font-family: 'Exo', serif;
 }
@@ -286,7 +298,7 @@ body {
   }
   #user-container {
     top: 72px;
-    background-color: rgb(3,155,229);
+    background-color: #008972;
     height: 38px;
     padding-top: 3px;
     padding-right: 2px;
@@ -309,6 +321,24 @@ iframe{
   margin: 0 auto;
   display: block
 }
+
+.illusion-frame{
+      position: relative;
+      padding-bottom: 600px;
+    padding-top: 35px;
+    height: 0;
+    overflow: hidden;
+}
+/*@media (max-width:767px){ .illusion-frame{padding-bottom: 95%;} }
+*/.illusion-frame iframe{
+      position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    /*width: 100%;*/
+    height: 100%;
+}
 input[type=range]::-moz-range-track {
   height: 10px;
   border-radius: 5px;
@@ -322,6 +352,10 @@ button#submit{
   background-color: #0067A6;
   color: #fff;
   font-weight: bold;
+}
+
+#show-results{
+  padding-bottom: 10px;
 }
 
 button#submit:hover{

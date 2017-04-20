@@ -14,6 +14,7 @@ function IllusionGame() {
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
   this.signInSnackbar = document.getElementById('must-signin-snackbar');
+    this.warning = document.getElementById('warn');
 
   this.resultForm.addEventListener('submit', this.saveAnswer.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -79,6 +80,7 @@ IllusionGame.prototype.signIn = function() {
 IllusionGame.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
+  location.reload();
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
@@ -100,6 +102,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Hide sign-in button.
     this.signInButton.classList.add('hidden');
+        this.warning.classList.remove('warn');
+    this.warning.innerHTML = "";
 
     // We load answer
     this.loadAnswer(userEmail);
@@ -112,6 +116,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Show sign-in button.
     this.signInButton.classList.remove('hidden');
+        this.warning.classList.add('warn');
+    this.warning.innerHTML = "Please sign-in before proceeding";
   }
 };
 
