@@ -1,17 +1,36 @@
-/*DEFAULTS*/
-/*
-Dark Blue: #0067A6;
-Light Blue: #00ABD8;
-Green:#008972;
-Yellow:#EFC028;
-Orange:#F2572D;
+/* DOCUMENT INFORMATION
+  - Document: DIGIT CSS
+  - Version:  1.0
+  - Client:   CSC Capstone
+  - Author:   Natalie Forman 
 */
 
-@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
-@import url('https://fonts.googleapis.com/css?family=Merriweather:300,400,700');
+/* COLORS
+  - Dark Blue: #0067A6;
+  - Light Blue: #00ABD8;
+  - Green:#008972;
+  - Orange:#F2572D;
+*/
 
+/* FONTS
+  - default body text  Open Sans, Arial, Helvetica, sans-serif
+  - header text        Exo, seriif
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Exo:400,700,900');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+/****************/
+/*****Globals****/
+/****************/
+
+h2{
+  font-family: 'Exo', serif;
+  font-weight: 900;
+  font-size: 36px;
+}
 h3{
-	font-family: 'Lato', serif;
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 28px;
   text-align: left;
@@ -25,8 +44,9 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  font-family: "Lato", sans-serif;
+  font-family: "Open Sans", sans-serif;
   margin-bottom: 60px;
+  font-weight: 400;
   background-color: #eee;
 }
 .main-content{
@@ -41,6 +61,10 @@ body {
 /****************/
 /*****Nav********/
 /****************/
+.navbar-brand{
+  font-family: 'Exo', serif;
+  font-weight: 700;
+}
 .navbar.navbar-default{
 	background-color:#008972; 
 	border: none;
@@ -60,28 +84,68 @@ body {
 .dropdown-menu{
   background-color: #008972;
 }
+.navbar-default .active{
+  background-color: #006352;
+}
 
 /****************/
 /****Side Nav****/
 /****************/
 
 .sidenav .nav {
-  background-color: #f1f1f1;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 .sidenav .active, .sidenav .nav > li.active > a:hover{
-	background-color: #ccc;
+	background-color: #aaa;
+  color: #fff;
 }
 .sidenav .nav > li > a:hover{
-	background-color: #aaa;
+	background-color: #999;
 	color: #fff;
 }
-.sidenav .nav-ready a{
+.sidenav a{
   color: #008972;
 }
-.sidenav .nav-finished a{
-  color: #aaa;
+.sidenav .active a{
+  color: #fff;
 }
 
+/****************/
+/***INDEX*****/
+/****************/
+
+.illusion-category{
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+.illusion-category h4{
+  font-family: "Exo", serif;
+  font-size: 28px;
+}
+.illusion-category a h4{
+  color: #000;
+  padding: 15px;
+}
+.illusion-category a h4:hover, .illusion-category a:hover{
+  color: #F2572D;
+  text-decoration: none;
+}
+
+.main-content .row:not(:first-child){
+  margin-top: 20px;
+}
+
+.illusion-category .btn.btn-default.results{
+  margin: 10px;
+}
+.back{
+  height: 200px;
+  background-image: url("../images/contrast_back.jpg");
+  background-size: cover;
+}
 
 /****************/
 /***QUESTION*****/
@@ -91,7 +155,7 @@ body {
 	height: 500px
 }
 .question-text{
-	font-family: 'Merriweather', serif;
+	font-family: 'Exo', serif;
 }
 .question-section #done{
 	margin-top: 20px;
@@ -99,7 +163,7 @@ body {
 }
 
 /****************/
-/***CONTRAST*****/
+/***CATEGORY*****/
 /****************/
 .collect-illusion{
 	background-color: #fff;
@@ -119,45 +183,8 @@ body {
 }
 
 /****************/
-/***INDEX*****/
-/****************/
-
-.illusion-category{
-	background-color: #fff;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin-top: 5px;
-}
-.illusion-category h4{
-  font-family: "Merriweather", serif;
-  font-size: 28px;
-}
-.illusion-category a h4{
-  color: #000;
-  padding: 15px;
-}
-.illusion-category a h4:hover, .illusion-category a:hover{
-  color: #F2572D;
-  text-decoration: none;
-}
-
-.main-content .row:not(:first-child){
-	margin-top: 20px;
-}
-
-.illusion-category .btn.btn-default.results{
-	margin: 10px;
-}
-.back{
-  height: 200px;
-  background-image: url("../images/contrast_back.jpg");
-  background-size: cover;
-}
-
-/****************/
 /***FOOTER*****/
 /****************/
-/*http://stackoverflow.com/questions/19756997/how-to-create-a-sticky-footer-that-plays-well-with-bootstrap-3/23833625#23833625*/
 .footer {
   position: absolute;
   bottom: 0;
@@ -166,8 +193,8 @@ body {
   text-align: center;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #ccc;
-  color: #000;
+  background-color: #777;
+  color: #fff;
 }
 
 @media (max-width:768px){ .footer{position:absolute;width:100%;} }
@@ -182,15 +209,14 @@ body {
   font-size: 20px;
 }
 .illusion-footer .illusion-nav:hover{
-	background-color: #aaa;
+	background-color: #008972;
+  color: #fff;
 	text-decoration: none;
 }
 
-
 /****************/
-/***FIREBASE*****/
+/***LOG IN*******/
 /****************/
-
 .material-icons {
   font-size: 36px;
   top: 8px;
@@ -253,9 +279,6 @@ body {
   line-height:36px;
   vertical-align:middle
 }
-iframe, object, embed {
-    max-width: 100%;
-}
 @media screen and (max-width: 610px) {
   header {
     height: 113px;
@@ -275,16 +298,46 @@ iframe, object, embed {
     background-size: 33px;
   }
 }
+
+/****************/
+/*****ILLUSION*****/
+/****************/
+iframe, object, embed {
+    max-width: 100%;
+}
 iframe{
   margin: 0 auto;
   display: block
 }
-
 input[type=range]::-moz-range-track {
   height: 10px;
   border-radius: 5px;
   height: 5px;
   border: 1px solid #bdc3c7;
+  background-color: #fff;
+}
+button#submit{
+  border: 3px solid #0067A6;
+  padding: 15px;
+  background-color: #0067A6;
+  color: #fff;
+  font-weight: bold;
+}
+
+button#submit:hover{
+  background-color: #00ABD8;
+}
+
+.instruct{
+  background-color: #eee;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+.instruct .instruction{
+  font-size: 11px;
+}
+
+.illusion-holder{
   background-color: #fff;
 }
 
@@ -295,16 +348,18 @@ input[type=range]::-moz-range-track {
 
 .your-results{
   margin-bottom: 15px;
-border: 2px solid #ccc;
-background-color: #efefef;
-padding: 20px;
+  border: 2px solid #ccc;
+  background-color: #efefef;
+  padding: 20px;
 }
 
 .submit-results{
-  margin-bottom: 20px;
+  padding-bottom: 20px;
   text-align: center;
 }
-
+#show-results{
+  margin-bottom: 20px;
+}
 .result-box{
   background-color: #fff;
   padding: 5px;
@@ -323,20 +378,33 @@ padding: 20px;
   width: 70px;
   display: inline-block;
 }
-#results h4{
+#results-page h4{
   display: inline-block;
   padding-left: 5px;
 }
-#results h4.section{
+#results-page h4.section{
   font-size: 24px;
   color: #00ABD8;
 }
-#results a{
+#results-page a{
   color: #000;
 }
-#results a:hover{
+#results-page a:hover{
   text-decoration: none;
+  color: #666;
 }
+hr.divider{
+  border-top: 2px solid #ccc;
+}
+.answer{
+  font-weight: bold;
+  margin: 0px;
+  padding: 5px 0;
+}
+
+/****************/
+/***GRAPHS*****/
+/****************/
 
 .ct-series-a .ct-bar{
   stroke-width: 20px;
@@ -351,31 +419,4 @@ text.ct-axis-title{
   color: #ccc;
   font-size: 12px;
   text-transform: uppercase;
-}
-
-.answer{
-  font-weight: bold;
-  margin: 0px;
-  padding: 5px 0;
-}
-
-button#submit{
-  border: 3px solid #0067A6;
-padding: 15px;
-background-color: #0067A6;
-color: #fff;
-font-weight: bold;
-}
-
-button#submit:hover{
-  background-color: #00ABD8;
-}
-
-.instruct{
-  background-color: #eee;
-  margin-bottom: 15px;
-  padding: 10px;
-}
-.instruct .instruction{
-  font-size: 11px;
 }
