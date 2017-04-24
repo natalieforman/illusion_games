@@ -4,6 +4,8 @@
 
 button.p5Button{
   padding: 10px;
+  background-color: #fff;
+  border: 2px solid #ccc;
 }
 
 button.p5Button.on{

@@ -28,7 +28,7 @@ function setup() {
     Y[i] = TopYheight/4+ random(TopYheight/2);
   }
   
-  aSliderOver = createSlider(0, 100, 51);
+  aSliderOver = createSlider(0, 100, 75);
   aSliderOver.size(SlideSize);  
 }
 
@@ -50,9 +50,6 @@ function draw() {
   
   var c = get(width/2, TopYheight/2);
   
-  fill(255)
-  text("r = "+c[0]+" g = "+c[1]+" b = "+c[2],20,20)
-  
   fill(255,255,255)
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
@@ -65,7 +62,7 @@ function draw() {
       window.parent.myAnswers.answer = aSliderOver.value();
   }
 
-  if(window.parent.myAnswers.answer != 51){
+  if(window.parent.myAnswers.answer != 75){
     window.parent.myAnswers.submit = true;
   }
 

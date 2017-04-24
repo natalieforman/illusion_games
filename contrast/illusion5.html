@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>The Illusion Games</title>
+    <title>DIGIT - Distributed Interactive Games and Illusions Testing</title>
     <!--Mobile Specific-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Latest compiled and minified Bootstrap files-->
@@ -49,8 +49,8 @@
             <li class="dropdown">
               <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Illusions <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="../contrast.html">Contrast</a></li>
-                <li><a href="#">Spatial</a></li>
+                <li><a href="../contrast.html">Color Contrast</a></li>
+                <li><a href="../spatial.html">Spatial Recognition</a></li>
               </ul>
             </li>
             <li><a href="../results.html">Results</a></li>
@@ -80,20 +80,21 @@
       </div>
     <div class="row content illusion-page">
         <div class="col-sm-2 sidenav">
+          <p>Color Contrast</p>
                 <ul class="nav nav-stacked">
-                    <li class="nav-ready"><a href="illusion1.html">Illusion 1</a></li>
-                    <li class="nav-ready"><a href="illusion2.html">Illusion 2</a></li>
-                    <li class="nav-ready"><a href="illusion3.html">Illusion 3</a></li>
-                    <li class="nav-ready active"><a href="illusion5.html">Illusion 4</a></li>
+                    <li class="nav-ready"><a href="illusion1.html">Color Constancy</a></li>
+                    <li class="nav-ready"><a href="illusion2.html">Remote Controls 1</a></li>
+                    <li class="nav-ready"><a href="illusion3.html">Remote Controls 2</a></li>
+                    <li class="nav-ready active"><a href="illusion5.html">Disk Gap</a></li>
                 </ul><br>
         </div>
 
         <div class="col-sm-9 illusion-holder">
 
-            <h2>Color Contrast 4</h2>
-            <p>This is the third contrast test</p>
+            <h2>Disk Gap</h2>
+            <p>The color contrast between the discs and the blinking circle create the illusion that the dots are out of sync. This can be changed by adding a circle around the blinking dot seperating the two layers and adding another layer of color contrast.</p>
             <div id="illusion-frame5" class="row illusion-frame">
-             <iframe src="iframe5.html" id="iframeid" width="800" height="600" frameBorder="0" align="center"></iframe> </div>
+             <iframe src="iframe5.html" id="iframeid" width="750" height="600"></iframe> </div>
         </div>
     </div>     
   </div>
@@ -101,7 +102,7 @@
           <div class="row">
         <div class="col-sm-9 col-sm-offset-2 instruct illusion-holder">
           <p class="instruction">INSTRUCTIONS</p>
-            <div><p>Move the slider until the dots appear to be red. Then submit your result.</p></div>
+            <div><p>Move the slider until the dots are all blinking in exact unison. Then submit your result.</p></div>
         </div>
       </div>
         <div class="row">
@@ -127,12 +128,11 @@
             <a href="illusion1.html"><div class="col-sm-6 illusion-nav">NEXT<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
           </div></a>
         </div>
-        </div>
     </div>
 
     <footer class="footer">
       <div class="container">
-        <p>Natalie Forman and Arthur Shapiro</p>
+        <p>2017 | Natalie Forman and Arthur Shapiro</p>
       </div>
     </footer>
         <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>

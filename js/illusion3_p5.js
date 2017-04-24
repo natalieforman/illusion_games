@@ -31,7 +31,7 @@ function setup() {
   canvas.parent("illusion-holder");
 
 //Sliders
-  HeightSlider = createSlider(-20, 80, 0.0001);
+  HeightSlider = createSlider(0, 100, 0.0001);
   HeightSlider.position(20, ScreenH+40);
 
 //intstuff
@@ -76,8 +76,8 @@ function draw() {
   for (var i = 0; i < 2; i = i+1) {
     push();
     translate((i*2 +1)*(ScreenW/4)-RecW/2,ScreenH/2-RecH/2)
-    if (i == 0) {Colony[i].display(ModColor, RightBackColor,0,H_add); }
-    if (i == 1) {Colony[i].display(ModColor, LeftBackColor,0,H_add); }
+    if (i == 0) {Colony[i].display(ModColor, RightBackColor,5,H_add); }
+    if (i == 1) {Colony[i].display(ModColor, LeftBackColor,5,H_add); }
     pop();
   }
 
