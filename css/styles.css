@@ -23,6 +23,10 @@
 #illusion-frame2.illusion-frame, #illusion-frame3.illusion-frame{
   padding-bottom: 550px;
 }
+#illusion-frame4.illusion-frame, #illusion-frame3.illusion-frame{
+  padding-bottom: 500px;
+}
+
 
 /****************/
 /*****Globals****/
@@ -412,6 +416,14 @@ button#submit:hover{
   border: 1px solid #fff;
   border-radius: 5px;
 }
+.result_none{
+  background-color: #ccc;
+  padding: 5px;
+  color: #333;
+  margin-top: 15px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+}
 .img-result{
   width: 70px;
   display: inline-block;
@@ -457,4 +469,24 @@ text.ct-axis-title{
   color: #ccc;
   font-size: 12px;
   text-transform: uppercase;
+}
+
+.ct-series-a .ct-slice-pie, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-area{
+  fill: #00ABD8;
+}
+
+.ct-series-b .ct-slice-pie, .ct-series-b .ct-slice-donut-solid, .ct-series-b .ct-area{
+  fill: #0067A6;
+}
+
+.ct-series-c .ct-slice-pie, .ct-series-c .ct-slice-donut-solid, .ct-series-c .ct-area{
+  fill: #008972;
+}
+
+.ct-series-d .ct-slice-pie, .ct-series-d .ct-slice-donut-solid, .ct-series-d .ct-area{
+  fill: #F2572D;
+}
+
+.ct-chart-pie .ct-label, .ct-chart-donut .ct-label{
+  fill: #fff;
 }

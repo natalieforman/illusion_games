@@ -1,0 +1,13 @@
+/****************/
+/*****p5****/
+/****************/
+
+button.p5Button{
+  padding: 10px;
+}
+
+button.p5Button.on{
+  background-color: #008972;
+  color: #fff;
+  border: 2px solid #fff;
+}
