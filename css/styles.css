@@ -93,6 +93,10 @@ body {
 .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover{
 	color: #fff;
 }
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a{
+  color: #fff;
+}
 .dropdown-menu{
   background-color: #008972;
 }

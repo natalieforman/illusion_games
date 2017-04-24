@@ -148,11 +148,13 @@ IllusionGame.RESULT_TEMPLATE =
 // Displays the answer in the UI.
 IllusionGame.prototype.displayAnswer = function(key, name, answer) {
   var div = document.getElementById(key);
-  var container = document.createElement('div');
-  container.innerHTML = IllusionGame.RESULT_TEMPLATE;
-  div = container.firstChild;
-  div.setAttribute('id', key);
-  this.resultSpot.appendChild(div);
+  if (!div) {
+    var container = document.createElement('div');
+    container.innerHTML = IllusionGame.RESULT_TEMPLATE;
+    div = container.firstChild;
+    div.setAttribute('id', key);
+    this.resultSpot.appendChild(div);
+  }
   var resultElement = div.querySelector('.result');
   resultElement.textContent = answer;
 

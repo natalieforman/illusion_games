@@ -4,10 +4,12 @@
 function IllusionGame() {
   this.checkSetup();
 
+  //submitting results
   this.resultForm = document.getElementById('result-form');
   this.resultSpot = document.getElementById('results');
   this.submitButton = document.getElementById('submit');
 
+  //logging in
   this.userPic = document.getElementById('user-pic');
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
@@ -38,11 +40,13 @@ IllusionGame.prototype.loadAnswer = function(userEmail) {
   // Make sure we remove all previous listeners.
   this.resultRef.off();
 
+  //Get the users results and pass to the page
   var setResult = function(data) {
     var val = data.val();
     this.displayAnswer(data.key, val.name, val.result);
   }.bind(this);
 
+  //Firebase command to retrieve value equal to user's unique email
   this.resultRef.orderByChild('email').equalTo(userEmail).on('child_added',  setResult);
   this.resultRef.orderByChild('email').equalTo(userEmail).on('child_changed',  setResult);
 
@@ -79,6 +83,7 @@ IllusionGame.prototype.signIn = function() {
 IllusionGame.prototype.signOut = function() {
   // Sign out of Firebase.
   this.auth.signOut();
+  //reload so that the user's data is no longer displaying
   location.reload();
 };
 
@@ -101,6 +106,7 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Hide sign-in button.
     this.signInButton.classList.add('hidden');
+    //Hid the warning bar
     this.warning.classList.remove('warn');
     this.warning.innerHTML = "";
 
@@ -114,7 +120,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
 
     // Show sign-in button.
     this.signInButton.classList.remove('hidden');
-        this.warning.classList.add('warn');
+    //Show the warning bar
+    this.warning.classList.add('warn');
     this.warning.innerHTML = "Please sign-in before proceeding";
   }
 };
@@ -145,23 +152,27 @@ IllusionGame.RESULT_TEMPLATE =
 // Displays a answer in the UI.
 IllusionGame.prototype.displayAnswer = function(key, name, answer) {
   var div = document.getElementById(key);
-  var container = document.createElement('div');
-  container.innerHTML = IllusionGame.RESULT_TEMPLATE;
-  div = container.firstChild;
-  div.setAttribute('id', key);
-  this.resultSpot.appendChild(div);
+  //make sure it isn't already diplaying
+  if (!div) {
+    var container = document.createElement('div');
+    container.innerHTML = IllusionGame.RESULT_TEMPLATE;
+    div = container.firstChild;
+    div.setAttribute('id', key);
+    this.resultSpot.appendChild(div);
+  }
   var resultElement = div.querySelector('.result');
   resultElement.textContent = answer;
   
   this.resultSpot.classList.add("your-results");
+  //hide the submit button
   this.submitButton.classList.add('hidden');
-  
-  //pass the answers to iFrame
+
+  //pass the answers to the iFrame
   myAnswers.answer = answer;
   myAnswers.submit = true;
 };
 
-// Enables or disables the submit button depending on the values of the input fields.
+// Enables or disables the submit button depending on if the user has interacted with the illusion
 IllusionGame.prototype.toggleButton = function() {
   if (myAnswers.submit ==true) {
     this.submitButton.removeAttribute('disabled');
