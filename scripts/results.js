@@ -46,8 +46,8 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                     "illusionThree" : {
                       Div: '#viz3',
                       Graph: 'bar',
-                      Buckets: [-20, 0, 20, 40, 60, 80],
-                      Answers: [0, 0, 0, 0, 0],
+                      Buckets: [0, 20, 40, 60, 80],
+                      Answers: [0, 0, 0, 0],
                       User: false
                       },
                     "illusionFour" : {
@@ -62,6 +62,13 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                     Graph: 'bar',
                     Buckets: [0, 10, 20, 30, 40, 50, 60],
                     Answers: [0, 0, 0, 0,0 ,0],
+                    User: false
+                    },
+                    "illusionSix" : {
+                    Div: '#viz6',
+                    Graph: 'pie',
+                    Buckets: ['Clockwise', 'Counter Clockwise', 'Neither'],
+                    Answers: [0, 0, 0],
                     User: false
                     }
                   };
