@@ -31,19 +31,32 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
   var illusions = {
                     "illusionOne" : {
                     Div: '#viz1',
+                    Graph: 'bar',
                     Buckets: [0,20,40,60,80,100],
-                    Answers: [0, 0, 0, 0, 0]
+                    Answers: [0, 0, 0, 0, 0],
+                    User: false
                     },
                     "illusionTwo" : {
                       Div: '#viz2',
+                      Graph: 'bar',
                       Buckets: [0,20,40,60,80],
-                      Answers: [0, 0, 0, 0]
+                      Answers: [0, 0, 0, 0],
+                      User: false
                       },
                     "illusionThree" : {
                       Div: '#viz3',
+                      Graph: 'bar',
                       Buckets: [-20, 0, 20, 40, 60, 80],
-                      Answers: [0, 0, 0, 0, 0]
-                      }
+                      Answers: [0, 0, 0, 0, 0],
+                      User: false
+                      },
+                    "illusionFour" : {
+                    Div: '#viz4',
+                    Graph: 'pie',
+                    Buckets: ['Clockwise', 'Counter Clockwise', 'Neither'],
+                    Answers: [0, 0, 0],
+                    User: false
+                    }
                   };
 
   // Global variables
@@ -61,11 +74,20 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                   
                 //if they are the user, display answer
                 if (char_obj[key][key2].email == this.userEmail){
-                  this.displayAnswer(key2, char_obj[key][key2].result, j);
+                   illusions[Object.keys(illusions)[j]].User = true;
+                   this.displayAnswer(key2, char_obj[key][key2].result, j);
+                }
+                else if(illusions[Object.keys(illusions)[j]].User != true){
+                  this.displayNoAnswer(key2, j);
                 }
                 var thisData = illusions[Object.keys(illusions)[j]];
                 this.sortData(thisData.Buckets, char_obj[key][key2].result, thisData.Answers);
-                this.drawResults(thisData.Buckets, thisData.Div, thisData.Answers);
+                if (thisData.Graph == 'bar' ){
+                  this.drawResultsBar(thisData.Buckets, thisData.Div, thisData.Answers);
+                }
+                else{
+                  this.drawResultsPie(thisData.Buckets, thisData.Div, thisData.Answers);
+                }
               }
         }
     }
@@ -91,18 +113,36 @@ IllusionGame.prototype.sortData = function(buckets, value, answerCount){
   var range = buckets;
 
   //check each bucket
-  var length = range.length;
-  for (var i = 0; i < length; i++){
-    //if the value is less than the max then add one to that bucket
-    if (value < range[i+1]){
-      answerCount[i] += 1;
-      break;
+  if (typeof value === 'number'){
+    var length = range.length;
+    for (var i = 0; i < length; i++){
+      //if the value is less than the max then add one to that bucket
+      if (value < range[i+1]){
+        answerCount[i] += 1;
+        break;
+      }
     }
+  }
+  else if(typeof value === 'string'){
+    for (var i = 0; i < buckets.length; i++)
+      if (value == buckets[i]){
+        answerCount[i] += 1;
+        break;
+      }
   }
 };
 
+IllusionGame.prototype.drawResultsPie = function(totalLabels, divId, totalResult){
 
-IllusionGame.prototype.drawResults = function(dataR, divId, totalResult){
+var data={
+  labels: totalLabels,
+  series: totalResult
+}
+
+new Chartist.Pie(divId, data);
+};
+
+IllusionGame.prototype.drawResultsBar = function(dataR, divId, totalResult){
   //turn values into percent
   var divide = totalResult.reduce(function(a, b) { return a + b; }, 0);
   var graphAnswers = [];
@@ -240,8 +280,18 @@ IllusionGame.RESULT_TEMPLATE =
       '<span class="result"></span></p>' +
     '</div>';
 
+// Template for result.
+IllusionGame.RESULT_NONE =
+    '<div class="result-container result_none">' +
+    '<p class="answer">No Answer ' +
+    '</div>';
+
 // Displays the answer in the UI.
 IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
+  var nodiv = document.getElementById("noAnswer"+illusionNum);
+  if (nodiv){
+    nodiv.parentNode.removeChild(nodiv);
+  }
   var div = document.getElementById(key);
   var container = document.createElement('div');
   container.innerHTML = IllusionGame.RESULT_TEMPLATE;
@@ -251,6 +301,21 @@ IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
   entry.appendChild(div);
   var resElement = div.querySelector('.result');
   resElement.textContent = result;
+};
+
+// Displays the answer in the UI.
+IllusionGame.prototype.displayNoAnswer = function(key, illusionNum) {
+  var div = document.getElementById("noAnswer"+illusionNum);
+  var div2 = document.getElementById(key);
+  //make sure it isn't already diplaying
+  if (!div && !div2) {
+    var container = document.createElement('div');
+    container.innerHTML = IllusionGame.RESULT_NONE;
+    div = container.firstChild;
+    div.setAttribute('id', "noAnswer"+illusionNum);
+    var entry = document.getElementById('results'+illusionNum);
+    entry.appendChild(div);
+  }
 };
 
 // Checks that the Firebase SDK has been correctly setup and configured.
