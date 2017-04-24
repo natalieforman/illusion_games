@@ -36,7 +36,7 @@ IllusionGame.prototype.initFirebase = function() {
 // Loads user result history and listens for upcoming ones.
 IllusionGame.prototype.loadAnswer = function(userEmail) {
   // Reference to the illusion database path.
-  this.resultRef = this.database.ref('contrast/illusionFour');
+  this.resultRef = this.database.ref('spatial/illusionFour');
   // Make sure we remove all previous listeners.
   this.resultRef.off();
 

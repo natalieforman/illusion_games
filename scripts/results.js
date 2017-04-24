@@ -74,9 +74,10 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                   
                 //if they are the user, display answer
                 if (char_obj[key][key2].email == this.userEmail){
+                   //they have answerd this illusion
                    illusions[Object.keys(illusions)[j]].User = true;
                    this.displayAnswer(key2, char_obj[key][key2].result, j);
-                }
+                }//if not a user answer, say no answer for that illusion
                 else if(illusions[Object.keys(illusions)[j]].User != true){
                   this.displayNoAnswer(key2, j);
                 }
@@ -93,8 +94,14 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
     }
   }.bind(this);
 
-    var getChar = firebase.database().ref('contrast').orderByKey();
-    getChar.on('value', function(snapshot){
+    //check each path that has results
+    var contrastPath =firebase.database().ref('contrast').orderByKey();
+    var spatialPath = firebase.database().ref('spatial').orderByKey(); 
+    //add each path to the array
+    var paths = [contrastPath, spatialPath];
+    for(var a = 0; a < paths.length; a++){
+      var getChar = paths[a];
+      getChar.on('value', function(snapshot){
         snapshot.forEach(function(child){
             var key = child.key;
             var value = child.val();
@@ -102,6 +109,7 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
         });
        store_user_char(user_char);
     });
+    }
 
 };
 
@@ -288,23 +296,28 @@ IllusionGame.RESULT_NONE =
 
 // Displays the answer in the UI.
 IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
+  //remove no answer div if it exists
   var nodiv = document.getElementById("noAnswer"+illusionNum);
   if (nodiv){
     nodiv.parentNode.removeChild(nodiv);
   }
+  //create answer div
   var div = document.getElementById(key);
+  if (!div){
   var container = document.createElement('div');
   container.innerHTML = IllusionGame.RESULT_TEMPLATE;
   div = container.firstChild;
   div.setAttribute('id', key);
   var entry = document.getElementById('results'+illusionNum);
   entry.appendChild(div);
+  }
   var resElement = div.querySelector('.result');
   resElement.textContent = result;
 };
 
-// Displays the answer in the UI.
+// Displays no answer in the UI.
 IllusionGame.prototype.displayNoAnswer = function(key, illusionNum) {
+  //check that an answer and no answer aren't already showing
   var div = document.getElementById("noAnswer"+illusionNum);
   var div2 = document.getElementById(key);
   //make sure it isn't already diplaying
