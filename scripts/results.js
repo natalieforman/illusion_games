@@ -56,6 +56,13 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                     Buckets: ['Clockwise', 'Counter Clockwise', 'Neither'],
                     Answers: [0, 0, 0],
                     User: false
+                    },
+                    "illusionFive" : {
+                    Div: '#viz5',
+                    Graph: 'bar',
+                    Buckets: [0, 10, 20, 30, 40, 50, 60],
+                    Answers: [0, 0, 0, 0,0 ,0],
+                    User: false
                     }
                   };
 
