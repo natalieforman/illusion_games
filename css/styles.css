@@ -387,12 +387,16 @@ button#submit:hover{
 }
 
 .instruct{
-  background-color: #eee;
   padding-top: 10px;
-  padding-bottom: 25px;
+  padding-bottom: 10px;
+  font-weight: bold;
+  background-color: #eee;
+  margin: 10px 15px;
 }
 .instruct .instruction{
-  font-size: 11px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #00ABD8;
 }
 
 .illusion-holder{
