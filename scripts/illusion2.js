@@ -13,8 +13,7 @@ function IllusionGame() {
   this.userName = document.getElementById('user-name');
   this.signInButton = document.getElementById('sign-in');
   this.signOutButton = document.getElementById('sign-out');
-  this.signInSnackbar = document.getElementById('must-signin-snackbar');
-    this.warning = document.getElementById('warn');
+  this.warning = document.getElementById('warn');
 
   this.resultForm.addEventListener('submit', this.saveAnswer.bind(this));
   this.signOutButton.addEventListener('click', this.signOut.bind(this));
@@ -128,12 +127,7 @@ IllusionGame.prototype.checkSignedInWithMessage = function() {
     return true;
   }
 
-  // Display a message to the user using a Toast.
-  var data = {
-    message: 'You must sign-in first',
-    timeout: 2000
-  };
-  this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
+  alert("Sign in before proceeding");
   return false;
 };
 
