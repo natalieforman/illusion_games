@@ -1,3 +1,10 @@
+/**
+ * The results.js file is used specifically for the results page
+ * Sorts all the users' data and displays the appropriate charts
+ * Checks user authentication
+ *
+ */
+
 'use strict';
 
 // Initializes Illusion Game.
@@ -25,8 +32,8 @@ IllusionGame.prototype.initFirebase = function() {
   this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
-// Loads chat messages history and listens for upcoming ones.
-IllusionGame.prototype.loadMessages = function(userEmail) {
+// Creates illusion objects and loads results.
+IllusionGame.prototype.loadResults = function(userEmail) {
   var illusions = {
                     "illusionOne" : {
                     Div: '#viz1',
@@ -72,34 +79,46 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
                     }
                   };
 
-  // Global variables
+    /**
+    * @namespace loadResults
+    * @method store_user_char - asynchronously handling results
+    * @param {object} user_char - all of the results for each database call
+    */
+
+    // Global variable for method
     var user_char = {};
 
     var store_user_char = function(user_char) {
+      //the object holding each categories results
       var char_obj = user_char;
+        //break it down into each illusion
         for(var key in char_obj){
             if(char_obj.hasOwnProperty(key)){
-              //iterate over each illusion
+              //iterate over each illusion's result
               for(var key2 in char_obj[key]){
-                //key, answer, Answers
-                //set the value of the illusion
+
+                //find the value # of the illusion
                 var j = char_obj[key][key2].test-1;
                   
-                //if they are the user, display answer
+                //if the current answer is the user's, display answer
                 if (char_obj[key][key2].email == this.userEmail){
-                   //they have answerd this illusion
+                   //they have answered this illusion
                    illusions[Object.keys(illusions)[j]].User = true;
                    this.displayAnswer(key2, char_obj[key][key2].result, j);
                 }//if not a user answer, say no answer for that illusion
                 else if(illusions[Object.keys(illusions)[j]].User != true){
                   this.displayNoAnswer(key2, j);
                 }
+                //target this specific datapoints object
                 var thisData = illusions[Object.keys(illusions)[j]];
+                //sortData, attributes: buckets, value, answers
                 this.sortData(thisData.Buckets, char_obj[key][key2].result, thisData.Answers);
                 if (thisData.Graph == 'bar' ){
+                  //drawResultsBar, attributes: buckets, divId, answers
                   this.drawResultsBar(thisData.Buckets, thisData.Div, thisData.Answers);
                 }
                 else{
+                  //drawResultsPie, attributes: buckets, divId, answers
                   this.drawResultsPie(thisData.Buckets, thisData.Div, thisData.Answers);
                 }
               }
@@ -107,33 +126,40 @@ IllusionGame.prototype.loadMessages = function(userEmail) {
     }
   }.bind(this);
 
-    //check each path that has results
+    //check each category for results
     var contrastPath =firebase.database().ref('contrast').orderByKey();
     var spatialPath = firebase.database().ref('spatial').orderByKey(); 
     //add each path to the array
     var paths = [contrastPath, spatialPath];
+    //iterate over every category
     for(var a = 0; a < paths.length; a++){
       var getChar = paths[a];
+      //retrieve each answer for every illusion
       getChar.on('value', function(snapshot){
         snapshot.forEach(function(child){
             var key = child.key;
             var value = child.val();
             user_char[key] = value;
         });
+        //pass to store_user_char method
        store_user_char(user_char);
     });
     }
 
 };
 
-
-/*Sort the data into the proper array spot*/
-/*Takes in the bucket values, the data value and the results array*/
+/**
+* @namespace IllusionGame
+* @method sortData - sorts the results into the proper array index
+* @param {Array} buckets - how to sort the data
+* @param {Int} value - the value being sorted
+* @param {Array} answerCount - the total counts for each bucket
+*/
 IllusionGame.prototype.sortData = function(buckets, value, answerCount){
   //the values we are sorting the results with
   var range = buckets;
 
-  //check each bucket
+  //used for bar charts
   if (typeof value === 'number'){
     var length = range.length;
     for (var i = 0; i < length; i++){
@@ -144,6 +170,7 @@ IllusionGame.prototype.sortData = function(buckets, value, answerCount){
       }
     }
   }
+  //used for pie charts
   else if(typeof value === 'string'){
     for (var i = 0; i < buckets.length; i++)
       if (value == buckets[i]){
@@ -153,30 +180,43 @@ IllusionGame.prototype.sortData = function(buckets, value, answerCount){
   }
 };
 
-IllusionGame.prototype.drawResultsPie = function(totalLabels, divId, totalResult){
-
+/**
+* @namespace IllusionGame
+* @method drawResultsPie - creates a chartist pie chart
+* @param {Array} buckets - how to sort the data
+* @param {Int} divId - where the chart should be drawn
+* @param {Array} answerCount - the total counts for each bucket
+*/
+IllusionGame.prototype.drawResultsPie = function(buckets, divId, answerCount){
 var data={
-  labels: totalLabels,
-  series: totalResult
+  labels: buckets,
+  series: answerCount
 }
 
 new Chartist.Pie(divId, data);
 };
 
-IllusionGame.prototype.drawResultsBar = function(dataR, divId, totalResult){
+/**
+* @namespace IllusionGame
+* @method drawResultsBar - creates a chartist bar graph
+* @param {Array} buckets - how to sort the data
+* @param {Int} divId - where the chart should be drawn
+* @param {Array} answerCount - the total counts for each bucket
+*/
+IllusionGame.prototype.drawResultsBar = function(buckets, divId, answerCount){
   //turn values into percent
-  var divide = totalResult.reduce(function(a, b) { return a + b; }, 0);
+  var divide = answerCount.reduce(function(a, b) { return a + b; }, 0);
   var graphAnswers = [];
-  for (var j=0; j<totalResult.length; j++){
-    graphAnswers[j] = Math.round((totalResult[j]/divide).toFixed(2)*100);
+  for (var j=0; j<answerCount.length; j++){
+    graphAnswers[j] = Math.round((answerCount[j]/divide).toFixed(2)*100);
   }
 
-  //create labels
+  //turn buckets into labels
   var hyph = "-";
   var name =[];
-  for (var i =0; i < dataR.length-1; i++){
-    var one = dataR[i].toString();
-    var two = dataR[i+1].toString();
+  for (var i =0; i < buckets.length-1; i++){
+    var one = buckets[i].toString();
+    var two = buckets[i+1].toString();
     var oneTwo = one.concat(hyph, two);
     name[i] = oneTwo;
   }
@@ -186,6 +226,7 @@ IllusionGame.prototype.drawResultsBar = function(dataR, divId, totalResult){
     series: [graphAnswers]
   };
 
+  //formatting details
   var options = {
   scaleMinSpace: 40,
   fullWidth: true,
@@ -198,6 +239,7 @@ IllusionGame.prototype.drawResultsBar = function(dataR, divId, totalResult){
     },
     high: 100,
     low: 0,
+    //add titles
     plugins: [
       Chartist.plugins.ctAxisTitle({
         axisX: {
@@ -263,8 +305,8 @@ IllusionGame.prototype.onAuthStateChanged = function(user) {
         this.warning.classList.remove('warn');
     this.warning.innerHTML = "";
 
-    // We load currently existing chant messages.
-    this.loadMessages(userEmail);
+    // We load currently existing results.
+    this.loadResults(userEmail);
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     this.userName.classList.add('hidden');
@@ -289,20 +331,26 @@ IllusionGame.prototype.checkSignedInWithMessage = function() {
   return false;
 };
 
-// Template for result.
+// Template for answered result.
 IllusionGame.RESULT_TEMPLATE =
     '<div class="result-container result_answer">' +
     '<p class="answer">Your Answer: ' +
       '<span class="result"></span></p>' +
     '</div>';
 
-// Template for result.
+// Template for no result.
 IllusionGame.RESULT_NONE =
     '<div class="result-container result_none">' +
     '<p class="answer">No Answer ' +
     '</div>';
 
-// Displays the answer in the UI.
+/**
+* @namespace IllusionGame
+* @method displayAnswer - adds the answer above the illusion chart
+* @param {String} key - unique identifier for this value
+* @param {Int} result - the value associated with the key
+* @param {Int} illusionNum - the illusion the result is for
+*/
 IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
   //remove no answer div if it exists
   var nodiv = document.getElementById("noAnswer"+illusionNum);
@@ -323,13 +371,19 @@ IllusionGame.prototype.displayAnswer = function(key, result, illusionNum) {
   resElement.textContent = result;
 };
 
-// Displays no answer in the UI.
+/**
+* @namespace IllusionGame
+* @method displayNoAnswer - adds the no answer above the illusion chart
+* @param {String} key - unique identifier for this value
+* @param {Int} illusionNum - the illusion the result is for
+*/
 IllusionGame.prototype.displayNoAnswer = function(key, illusionNum) {
-  //check that an answer and no answer aren't already showing
+  //check that an answer or no answer isn't already showing
   var div = document.getElementById("noAnswer"+illusionNum);
   var div2 = document.getElementById(key);
   //make sure it isn't already diplaying
   if (!div && !div2) {
+    //create div to show there is no answer
     var container = document.createElement('div');
     container.innerHTML = IllusionGame.RESULT_NONE;
     div = container.firstChild;

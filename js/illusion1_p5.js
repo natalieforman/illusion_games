@@ -53,15 +53,18 @@ function draw() {
   fill(255,255,255)
   rect(1,SliderY-40,width-2, BottomYheight-3);
   
-  //if they have answered, set it to the answer
+  //if they have answered, set slider to result
   if(window.parent.myAnswers.submit == true && window.parent.myAnswers.slider != true){
       aSliderOver.value(window.parent.myAnswers.answer);
+      //now allow the user to move the slider
       window.parent.myAnswers.slider = true;
   }
+  //answer is equal to slider value
   else{
       window.parent.myAnswers.answer = aSliderOver.value();
   }
 
+  //indicate that the user has moved the slider and can now submit an answer
   if(window.parent.myAnswers.answer != 75){
     window.parent.myAnswers.submit = true;
   }
@@ -106,14 +109,8 @@ function getPosition(el) {
     y: yPos
   };
 }
- 
-// deal with the page getting resized or scrolled
-//window.addEventListener("resize", updatePosition, false);
-//window.addEventListener("scroll", updatePosition, false);
-
 
 function windowResized() {
   var spot = document.getElementById("illusion-holder");
   var position = getPosition(spot)
-  //aSliderOver.position(position.x+SliderX+2*SliderDist, position.y+SliderY+3*SliderYDist);
 }

@@ -1,3 +1,9 @@
+/**
+ * The main_login.js file is used specifically for logging in
+ * This file is used for pages with no database calls
+ *
+ */
+
 'use strict';
 
 // Initializes Illusion Game.

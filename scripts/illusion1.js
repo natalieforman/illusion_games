@@ -1,3 +1,9 @@
+/**
+ * The illusion#.js file is used specifically for its associated illusion page
+ * Checks user authentication
+ * Displays user's previous answer
+ */
+
 'use strict';
 
 // Initializes Illusion Game.
