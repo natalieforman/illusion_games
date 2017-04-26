@@ -141,7 +141,7 @@ IllusionGame.RESULT_TEMPLATE =
     '<div class="result-container">' +
      '<p>Your answer: ' +
       '<span class="result"></span>' +
-      '<a href="../results.html" class="result-button">See Results</a></p>' +
+      '<a href="../results.html#results0" class="result-button">See Results</a></p>' +
     '</div>';
 
 // Displays a answer in the UI.
